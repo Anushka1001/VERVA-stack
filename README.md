@@ -6,6 +6,6 @@ Subscription Management Portal
 <-- version 0.1 -->
 
 Contains -
-React.JS frontend for Verva Application for creating Frontend.
-Flask-Python Backend for API and working
-...
+        React.JS frontend for Verva Application for creating Frontend.
+        Flask-Python Backend for API and working
+        ...
