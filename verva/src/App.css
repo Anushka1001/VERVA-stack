@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Stint+Ultra+Expanded&display=swap');
+
+
+.mont {
+    font-family: 'Montserrat', sans-serif;
+}
+
+.montAlt {
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+.stint {
+    font-family: 'Stint Ultra Expanded', serif;
+}
+
+.border {
+    border: 2px black solid;
+    margin: 20px;
+}
+
+.displayFlex {
+    display: flex;
+}
+
+.white {
+    color: white;
+}

@@ -1,0 +1,46 @@
+.Navbar_logo {
+    width: 4.5em;
+    margin: 10px auto 10px 2em;
+    cursor: pointer;
+    user-select: none;
+}
+
+.Navbar_login_logo {
+    width: 13vh;
+    margin: 1vh 0 7vh 0;
+}
+
+.Navbar_register_logo {
+    width: 14vh;
+    height: 14vh;
+    padding: 15vh 7vh 20vh 3vh;
+    margin-right: 6vh;
+    border-right: #c0bfbf 1px solid;
+}
+
+.margin0 {
+    margin: 0px !important;
+}
+
+.Heading {
+    font-size: 20px;
+    color: #3f3f3f;
+    font-weight: 600;
+}
+
+/* .submitButton {
+    opacity: 1;
+} */
+
+.signUpLink {
+    color: #c44758;
+    margin: 0 0 0 1vh;
+    cursor: pointer;
+}
+
+.signsText {
+    display: flex;
+    font-size: 13px;
+    font-weight: 600;
+    color: #3f3f3f;
+}
