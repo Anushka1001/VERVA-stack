@@ -1,4 +1,5 @@
 import axios from './axios';
+import { login } from '../store/action';
 
 export const postData = async (dataToSend) => {
     try {
@@ -10,11 +11,13 @@ export const postData = async (dataToSend) => {
     }
 };
 
-export const postDataToServer = (dataToSend) => {
+export const postDataToServer = (dataToSend, dispatch) => {
     console.log("Sending data to server:", dataToSend);
-
     postData(dataToSend)
         .then((data) => {
+            if (data.success) {
+                dispatch(login());
+            }
             console.log("Server response:", data);
         })
         .catch((error) => {
@@ -25,6 +28,8 @@ export const postDataToServer = (dataToSend) => {
 export const checkUserFromServer = async (userTocheck) => {
     try {
         const response = await axios.post('/login', userTocheck);
+        const { access_token } = response.data.access_token;
+        localStorage.setItem('token', access_token);
         return response.data;
     } catch (error) {
         console.log('Error Validating User:', error);
@@ -32,10 +37,13 @@ export const checkUserFromServer = async (userTocheck) => {
     };
 }
 
-export const loginUser = (userTocheck) => {
+export const loginUser = (userTocheck, dispatch) => {
     console.log("Sending data to server:", userTocheck);
     checkUserFromServer(userTocheck)
         .then((data) => {
+            if (data.success) {
+                dispatch(login());
+            }
             console.log("Server response:", data);
         })
         .catch((error) => {

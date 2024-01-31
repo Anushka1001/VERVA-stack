@@ -1,37 +1,10 @@
-# # class form_details(db.Model):
-# #     sno = db.Column(db.Integer, primary_key=True)
-# #     curr_user_id = db.Column(db.String(12), db.ForeignKey('user_details.user_id'), nullable=False)
-# #     price = db.Column(db.Integer)
-# #     date = db.Column(db.Date)
-# #     month = db.Column(db.Integer)
-# #     year = db.Column(db.Integer)
-# #     auto = db.Column(db.Boolean)
-
-# #     def __repr__(self) -> str:
-# #         return f"{self.sno} - {self.curr_user_id} - {self.price} - {self.auto} - {self.date}"
-
-# # CORS(app, resources={r"/add": {"origins": "http://localhost:3000"}})
-
-# # @app.route("/add", methods=['POST'])
-# # def add():
-# #     if request.method == "POST":
-# #         curr_user_id = request.json.get('user_id')
-# #         price = request.json.get('price')
-# #         auto = request.json.get('auto')
-# #         date = request.json.get('date')
-# #         month = request.json.get('month')
-# #         year = request.json.get('year')
-# #         formDetails = form_details(curr_user_id=curr_user_id, price=price, auto=auto, date=date, month=month, year=year)
-# #         db.session.add(formDetails)
-# #         db.session.commit()
-# #     form_details_list = form_details.query.all()
-# #     return jsonify(form_details_list)
-
+import uuid
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-import uuid
 from flask_bcrypt import Bcrypt
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies
+from datetime import timedelta
 
 app = Flask(__name__)
 
@@ -39,6 +12,10 @@ bcrypt = Bcrypt(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///myapp.db'
 db = SQLAlchemy(app)
+
+app.config['JWT_SECRET_KEY'] = 'your-secret-key'
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=7)
+jwt = JWTManager(app)
 
 class user_details(db.Model):
     user_id = db.Column(db.String(12), primary_key=True, unique=True, default=str(uuid.uuid4()))
@@ -55,6 +32,7 @@ with app.app_context():
 
 CORS(app, resources={r"/register": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 CORS(app, resources={r"/login": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+CORS(app, resources={r"/protected": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 
 @app.route("/register", methods=['POST', 'GET'])
 def register():
@@ -73,7 +51,7 @@ def register():
             db.session.add(userDetails)
             db.session.commit()
 
-            response = make_response(jsonify({"message": "User registered successfully", "user": {'email': userDetails.email, 'name': userDetails.name, 'age': userDetails.age}}), 200)
+            response = make_response(jsonify({"success": True, "message": "User registered successfully", "user": {'email': userDetails.email, 'name': userDetails.name, 'age': userDetails.age}}), 200)
             response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
             response.headers.add("Access-Control-Allow-Credentials", "true")
             return response
@@ -82,8 +60,6 @@ def register():
             user_details_list = user_details.query.all()
             user_details_dicts = [{'email': user.email, 'user_password': user.user_password, 'name': user.name, 'age': user.age} for user in user_details_list]
             response = make_response(jsonify(user_details_list=user_details_dicts), 200)
-            response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
-            response.headers.add("Access-Control-Allow-Credentials", "true")
             return response
 
     except Exception as e:
@@ -99,14 +75,24 @@ def login():
         user_email = request.json.get('user_email')
         user_password = request.json.get('user_password')
         user = user_details.query.filter_by(email=user_email).first()
-
         if user and bcrypt.check_password_hash(user.user_password, user_password):
-            return jsonify({'success': True, 'message': 'Login successful'})
+            user_id = user.user_id
+            access_token = create_access_token(identity=user_id)
+            response = jsonify({'success': True, 'message': 'Login successful', 'access_token':access_token})
+            set_access_cookies(response, access_token)
+            return response
         else:
             return jsonify({'success': False, 'message': 'Invalid credentials'})
 
     elif request.method == "GET":
         return jsonify({'message': 'This route is for user login'})
+
+@app.route('/protected', methods=['GET'])
+@jwt_required()
+def protected():
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
+
 
 if __name__ == "__main__":
     app.run(debug=True)

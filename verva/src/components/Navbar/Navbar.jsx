@@ -17,9 +17,28 @@ import {
 import Logout from "@mui/icons-material/Logout";
 import "../../Styles/Style.css";
 import { ProfileAvatar, buttonStyle, navbarStyle } from "../../Styles/Styles";
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../store/action";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  const isLoggedIn = false;
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+  const navHome = () => {
+    navigate("/");
+  };
+  const openProfile = () => {
+    navigate("/Profile");
+  };
+  const openDashboard = () => {
+    navigate("/Dashboard");
+  };
+  const openStream = () => {
+    navigate("/My Stream Subscriptions");
+  };
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -27,6 +46,10 @@ const Navbar = () => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -49,9 +72,10 @@ const Navbar = () => {
           src="images/verva-white-full.png"
           alt="VERVA"
           className="Navbar_logo"
+          onClick={navHome}
         />
         <Stack marginRight={3} spacing={2} direction="row" alignItems="center">
-          {!isLoggedIn ? (
+          {!isAuthenticated ? (
             <>
               <Button variant="contained" sx={buttonStyle} onClick={openLogin}>
                 <span className="mont">LOGIN</span>
@@ -66,10 +90,14 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Button variant="contained" sx={buttonStyle}>
+              <Button
+                variant="contained"
+                sx={buttonStyle}
+                onClick={openDashboard}
+              >
                 Dashboard
               </Button>
-              <Button variant="contained" sx={buttonStyle}>
+              <Button variant="contained" sx={buttonStyle} onClick={openStream}>
                 Stream
               </Button>
               <Tooltip title="Account settings">
@@ -99,11 +127,11 @@ const Navbar = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={openProfile}>
           <Avatar /> Profile
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleLogout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

@@ -4,25 +4,18 @@ import {
   FormTextField,
   LoginMenu,
   PaperStyle,
-  PaperStyle2,
-  RegMenu,
   closeButton,
   submitButton,
 } from "../../Styles/Styles";
 import CloseIcon from "@mui/icons-material/Close";
-import { loginUser, postDataToServer } from "../../server/apiCalls";
+import { loginUser } from "../../server/apiCalls";
+import { useDispatch } from "react-redux";
+import Register from "./Register";
 
 function Login(props) {
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [name, setName] = useState("");
-  const [age, setAge] = useState("");
-  const dataToSend = {
-    user_email: email,
-    user_password: pass,
-    name: name,
-    age: age,
-  };
 
   const userDataLogin = {
     user_email: email,
@@ -32,7 +25,13 @@ function Login(props) {
   const [isLogin, setIsLogin] = useState(false);
 
   const handleToggleScreen = (isLogin) => {
+    console.log("toggle login to signup");
     setIsLogin(!isLogin);
+  };
+
+  const handleLogin = () => {
+    loginUser(userDataLogin, dispatch);
+    props.closeLogin();
   };
 
   return (
@@ -52,6 +51,9 @@ function Login(props) {
                   id="user_email"
                   required
                   fullWidth
+                  inputProps={{
+                    maxLength: 50,
+                  }}
                   margin="dense"
                   size="small"
                   type="email"
@@ -66,6 +68,10 @@ function Login(props) {
                   id="user_password"
                   required
                   fullWidth
+                  inputProps={{
+                    maxLength: 50,
+                    minLength: 6,
+                  }}
                   margin="dense"
                   size="small"
                   type="password"
@@ -90,10 +96,7 @@ function Login(props) {
               <Button
                 sx={submitButton}
                 variant="contained"
-                onClick={() => {
-                  loginUser(userDataLogin);
-                  props.closeLogin();
-                }}
+                onClick={handleLogin}
               >
                 <span className="mont submitButton">Login</span>
               </Button>
@@ -104,102 +107,11 @@ function Login(props) {
           </Button>
         </Grid>
       ) : (
-        <>
-          <Grid container justifyContent={"center"}>
-            <Box sx={PaperStyle2} textAlign={"center"}>
-              <Grid sx={RegMenu}>
-                <img
-                  src="images/verva-red-circle.png"
-                  alt="VERVA"
-                  className="Navbar_register_logo"
-                />
-                <Grid>
-                  <TextField
-                    variant="filled"
-                    id="name"
-                    required
-                    fullWidth
-                    margin="dense"
-                    size="small"
-                    type="text"
-                    sx={FormTextField}
-                    label="Name"
-                    onChange={(e) => {
-                      setName(e.target.value);
-                    }}
-                  />
-
-                  <TextField
-                    variant="filled"
-                    id="age"
-                    required
-                    fullWidth
-                    margin="dense"
-                    size="small"
-                    type="number"
-                    sx={FormTextField}
-                    label="Age"
-                    onChange={(e) => {
-                      setAge(e.target.value);
-                    }}
-                  />
-                  <TextField
-                    variant="filled"
-                    id="user_email"
-                    required
-                    fullWidth
-                    margin="dense"
-                    size="small"
-                    type="email"
-                    sx={FormTextField}
-                    label="Email"
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                    }}
-                  />
-                  <TextField
-                    variant="filled"
-                    id="user_password"
-                    required
-                    fullWidth
-                    margin="dense"
-                    size="small"
-                    type="password"
-                    sx={FormTextField}
-                    label="Password"
-                    onChange={(e) => {
-                      setPass(e.target.value);
-                    }}
-                  />
-                  <p className="mont signsText">
-                    Already a member?
-                    <span
-                      className="signUpLink"
-                      onClick={() => {
-                        handleToggleScreen(isLogin);
-                      }}
-                    >
-                      Login
-                    </span>
-                  </p>
-                  <Button
-                    sx={submitButton}
-                    variant="contained"
-                    onClick={() => {
-                      postDataToServer(dataToSend);
-                      props.closeLogin();
-                    }}
-                  >
-                    <span className="mont submitButton">Sign Up</span>
-                  </Button>
-                </Grid>
-              </Grid>
-            </Box>
-            <Button onClick={props.closeLogin} sx={closeButton}>
-              <CloseIcon />
-            </Button>
-          </Grid>
-        </>
+        <Register
+          isLogin={isLogin}
+          setIsLogin={setIsLogin}
+          closeLogin={props.closeLogin}
+        />
       )}
     </>
   );

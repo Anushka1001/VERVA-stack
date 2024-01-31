@@ -19,7 +19,7 @@ export const ProfileAvatar = {
 export const PaperStyle = {
   display: "flex",
   backgroundColor: "#ffffff",
-  padding: "10px",
+  padding: "12px",
   width: "18lh",
   height: "70vh",
   borderRadius: "15px",
@@ -28,7 +28,7 @@ export const PaperStyle = {
 export const PaperStyle2 = {
   display: "flex",
   backgroundColor: "#fcfcfc",
-  padding: "10px",
+  padding: "12px",
   width: "30lh",
   height: "70vh",
   borderRadius: "15px",
