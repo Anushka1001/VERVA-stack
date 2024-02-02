@@ -1,3 +1,12 @@
+/* CUSTOM */
+
+.margin0 {
+    margin: 0px !important;
+}
+
+
+/* NAVBAR */
+
 .Navbar_logo {
     width: 4.5em;
     margin: 10px auto 10px 2em;
@@ -18,20 +27,6 @@
     border-right: #c0bfbf 1px solid;
 }
 
-.margin0 {
-    margin: 0px !important;
-}
-
-.Heading {
-    font-size: 20px;
-    color: #3f3f3f;
-    font-weight: 600;
-}
-
-/* .submitButton {
-    opacity: 1;
-} */
-
 .signUpLink {
     color: #c44758;
     margin: 0 0 0 1vh;
@@ -43,4 +38,20 @@
     font-size: 13px;
     font-weight: 600;
     color: #3f3f3f;
+}
+
+.ProfileMenu>.MuiPaper-root {
+    background-color: #222222;
+}
+
+.NavbarUser {
+    padding: 0 0 0 10px;
+}
+
+
+/* FOOTER */
+
+.linkFooter {
+    text-decoration: none;
+    color: #888888;
 }

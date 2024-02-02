@@ -19,7 +19,7 @@ jwt = JWTManager(app)
 
 class user_details(db.Model):
     user_id = db.Column(db.String(12), primary_key=True, unique=True, default=str(uuid.uuid4()))
-    email = db.Column(db.String(50), primary_key=True, nullable=False)
+    email = db.Column(db.String(50), primary_key=True, unique=True, nullable=False)
     user_password = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     age = db.Column(db.Integer, nullable=False)
@@ -42,23 +42,36 @@ def register():
             user_password = request.json.get('user_password')
             name = request.json.get('name')
             age = request.json.get('age')
-            existing_user = user_details.query.filter_by(email=user_email).first()
-            if existing_user:
-                return jsonify({'success': False, 'message': 'User with this email already exists'})
+            user_id = str(uuid.uuid4())
+            while user_details.query.filter_by(user_id=user_id).first():
+                user_id = str(uuid.uuid4())
 
             hashed_password = bcrypt.generate_password_hash(user_password).decode('utf-8')
-            userDetails = user_details(email=user_email, user_password=hashed_password, name=name, age=age)
+            userDetails = user_details(user_id=user_id, email=user_email, user_password=hashed_password, name=name, age=age)
             db.session.add(userDetails)
             db.session.commit()
 
-            response = make_response(jsonify({"success": True, "message": "User registered successfully", "user": {'email': userDetails.email, 'name': userDetails.name, 'age': userDetails.age}}), 200)
+            user_id = userDetails.user_id
+            access_token = create_access_token(identity=user_id)
+
+            response_data = {
+                "success": True,
+                "message": "User registered successfully",
+                "user": {'email': userDetails.email, 'name': userDetails.name, 'age': userDetails.age},
+                "token": access_token
+            }
+
+            response = make_response(jsonify(response_data), 200)
+            set_access_cookies(response, access_token)
+
             response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
             response.headers.add("Access-Control-Allow-Credentials", "true")
+
             return response
 
         elif request.method == "GET":
             user_details_list = user_details.query.all()
-            user_details_dicts = [{'email': user.email, 'user_password': user.user_password, 'name': user.name, 'age': user.age} for user in user_details_list]
+            user_details_dicts = [{'id': user.user_id, 'email': user.email, 'user_password': user.user_password, 'name': user.name, 'age': user.age} for user in user_details_list]
             response = make_response(jsonify(user_details_list=user_details_dicts), 200)
             return response
 
@@ -77,8 +90,12 @@ def login():
         user = user_details.query.filter_by(email=user_email).first()
         if user and bcrypt.check_password_hash(user.user_password, user_password):
             user_id = user.user_id
+            user_name = user.name
+            user_email = user.email
+            user_age = user.age
+            userDetails = {"name": user_name, "email": user_email, "age": user_age}
             access_token = create_access_token(identity=user_id)
-            response = jsonify({'success': True, 'message': 'Login successful', 'access_token':access_token})
+            response = jsonify({'success': True, 'message': 'Login successful', 'access_token': access_token, 'userDetails': userDetails})
             set_access_cookies(response, access_token)
             return response
         else:

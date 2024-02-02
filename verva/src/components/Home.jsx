@@ -6,6 +6,8 @@ import Footer from "./Footer/Footer";
 import Profile from "./Content/Profile/Profile";
 import Dashboard from "./Content/Dashboard/Dashboard";
 import MySubs from "./Content/MySubs/MySubs";
+import AddSubs from "./Content/AddSubs/AddSubs";
+import About from "./Content/About/About";
 
 function Home() {
   return (
@@ -15,7 +17,9 @@ function Home() {
         <Route path="/" element={<Content />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/Dashboard" element={<Dashboard />} />
-        <Route path="/My Stream Subscriptions" element={<MySubs />} />
+        <Route path="/My_Subscriptions" element={<MySubs />} />
+        <Route path="/Browse_Subscriptions" element={<AddSubs />} />
+        <Route path="/About" element={<About />} />
       </Routes>
       <Footer />
     </Router>

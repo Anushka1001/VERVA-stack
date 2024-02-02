@@ -5,9 +5,9 @@ import AddSubs from "./AddSubs/AddSubs";
 import SubsManager from "./SubsManager/SubsManager";
 import UpcomingTitles from "./UpcomingTitles/UpcomingTitles";
 
-function Content(props) {
+function Content() {
   return (
-    <div className="border">
+    <div className="content">
       <Grid className="border">carousal</Grid>
       <Grid className="border">
         <MySubs />

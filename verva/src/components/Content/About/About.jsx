@@ -1,11 +1,11 @@
 import React from "react";
 
-function Profile() {
+function About(props) {
   return (
     <div>
-      <>Profile</>
+      <>About</>
     </div>
   );
 }
 
-export default Profile;
+export default About;

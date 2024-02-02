@@ -54,7 +54,7 @@ function Register(props) {
                 fullWidth
                 inputProps={{
                   maxLength: 50,
-                  minLength: 6,
+                  minLength: 3,
                 }}
                 margin="dense"
                 size="small"
@@ -89,10 +89,6 @@ function Register(props) {
                 id="user_email"
                 required
                 fullWidth
-                inputProps={{
-                  maxLength: 50,
-                  minLength: 6,
-                }}
                 margin="dense"
                 size="small"
                 type="email"

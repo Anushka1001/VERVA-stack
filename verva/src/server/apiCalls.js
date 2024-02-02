@@ -1,5 +1,5 @@
 import axios from './axios';
-import { login } from '../store/action';
+import { login, token, userData } from '../store/action';
 
 export const postData = async (dataToSend) => {
     try {
@@ -18,7 +18,10 @@ export const postDataToServer = (dataToSend, dispatch) => {
             if (data.success) {
                 dispatch(login());
             }
+            dispatch(userData(data.user));
+            dispatch(token(data.token))
             console.log("Server response:", data);
+            console.log("blah", data.user, "\n", data.token);
         })
         .catch((error) => {
             console.error('Error in postDataToServer:', error);
@@ -44,7 +47,10 @@ export const loginUser = (userTocheck, dispatch) => {
             if (data.success) {
                 dispatch(login());
             }
+            dispatch(userData(data.userDetails));
+            dispatch(token(data.access_token))
             console.log("Server response:", data);
+            console.log("blahlogin", data.userDetails, "\n", data.access_token);
         })
         .catch((error) => {
             console.error('Error in postDataToServer:', error);

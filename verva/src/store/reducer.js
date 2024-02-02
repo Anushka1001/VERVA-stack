@@ -1,5 +1,11 @@
 const initialState = {
     isAuthenticated: false,
+    user: {
+        userName: '',
+        userEmail: '',
+        userAge: '',
+    },
+    token: ''
 };
 
 const vervaReducer = (state = initialState, action) => {
@@ -11,8 +17,17 @@ const vervaReducer = (state = initialState, action) => {
             };
         case 'LOGOUT':
             return {
+                ...initialState,
+            };
+        case 'USERDATA':
+            return {
                 ...state,
-                isAuthenticated: false,
+                user: action.payload,
+            };
+        case 'TOKEN':
+            return {
+                ...state,
+                token: action.payload,
             };
         default:
             return state;

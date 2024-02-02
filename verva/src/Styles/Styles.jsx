@@ -1,19 +1,24 @@
+// navbar
+
 export const navbarStyle = {
-  backgroundColor: "#1b1b1b",
+  background:
+    "linear-gradient(0deg, rgba(45,45,45,1) 24%, rgba(38,38,38,1) 42%, rgba(34,34,34,1) 100%);",
 };
 
+// login / Register
+
 export const buttonStyle = {
-  backgroundColor: "#ff2f2fbb",
+  backgroundColor: "#E51B23",
   padding: "10px",
   transition: "background-color 0.3s",
   "&:hover": {
-    backgroundColor: "#c91616de",
+    backgroundColor: "#f62c34",
   },
   maxHeight: "37px",
 };
 
 export const ProfileAvatar = {
-  backgroundColor: "#ff2f2fde",
+  backgroundColor: "#E51B23",
 };
 
 export const PaperStyle = {
@@ -65,7 +70,7 @@ export const FormTextField = {
 };
 
 export const submitButton = {
-  backgroundColor: "#ff2f2f",
+  backgroundColor: "#E51B23",
   padding: "10px",
   transition: "background-color 0.3s",
   "&:hover": {
@@ -73,4 +78,51 @@ export const submitButton = {
   },
   maxHeight: "37px",
   margin: "1.5vh 0 0 0",
+};
+
+export const ProfileMenuItem = {
+  color: "#fdfdfd",
+  padding: "10px 50px 10px 20px",
+};
+
+export const AvatarStyle = {
+  margin: "0 10px",
+};
+
+export const ProfileuserInfo = {
+  color: "#fdfdfd",
+  padding: "10px 50px 10px 20px",
+  cursor: "default",
+  userSelect: "none",
+  pointerEvents: "none",
+};
+
+// Footer
+
+export const footerStyle = {
+  display: "flex",
+  flexDirection: "row",
+  alignItems: "flex-start",
+  margin: "auto 0 0 0",
+  position: "static",
+  justifyContent: "center",
+  color: "#888888",
+  background:
+    "linear-gradient(180deg, rgba(45,45,45,1) 17%, rgba(38,38,38,1) 42%, rgba(34,34,34,1) 100%)",
+};
+
+export const footerMenuItem = {
+  fontSize: "10.5px",
+  fontWeight: "600",
+  margin: "4px 0",
+  cursor: "pointer",
+  "&:hover": {
+    color: "#aaaaaa",
+  },
+};
+
+export const footerMenuItemHeading = {
+  fontSize: "12px",
+  color: "#ffffff",
+  margin: "10px 0",
 };
