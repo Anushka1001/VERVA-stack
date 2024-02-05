@@ -4,6 +4,13 @@
     margin: 0px !important;
 }
 
+.pointerEventsNone {
+    pointer-events: none;
+}
+
+.userSelectNone {
+    user-select: none;
+}
 
 /* NAVBAR */
 
@@ -48,10 +55,94 @@
     padding: 0 0 0 10px;
 }
 
+.profileFont {
+    font-size: 13px;
+}
 
 /* FOOTER */
 
 .linkFooter {
     text-decoration: none;
     color: #888888;
+}
+
+/* Heading */
+
+.headingDividerText {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* PROFILE */
+
+.ProfilePageAvatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.notSelectedTabStyle {
+    color: #ffffff;
+}
+
+.ProfileInfo {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    margin: 0 7.7em 10px auto;
+}
+
+.ProfileInfo span {
+    color: #ffffff;
+    font-size: 3em;
+    font-weight: 400;
+}
+
+.ProfileInfo div {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 0 1em;
+    letter-spacing: 6px;
+}
+
+.ViewProfile {
+    margin-right: 3em;
+}
+
+.ViewHeading {
+    font-size: 10px;
+    margin: 0 0 10px 0;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.ViewValue {
+    font-size: 18px;
+    margin: 0 0 20px 0;
+}
+
+.deleteValue {
+    font-size: 14px;
+    margin: 1em 0 2em 0;
+}
+
+.deleteHeading {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    font-variant: small-caps;
+}
+
+.deleteCheck {
+    font-size: 12px;
+    margin: 0 0 1em 0;
+    align-items: center;
+}
+
+.deleteError {
+    font-size: 12px;
+    margin: 0 0 4px 0;
+    color: #ff1e25;
+    letter-spacing: 2px;
 }

@@ -26,6 +26,9 @@ function Footer() {
   const openAbout = () => {
     navigate("/About");
   };
+  const openComingSoon = () => {
+    navigate("/coming_soon");
+  };
 
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -50,13 +53,18 @@ function Footer() {
             <Grid>
               <Stack direction="column" justifyContent="left">
                 <Grid sx={footerMenuItemHeading}>
-                  <span className="mont">Verva</span>
+                  <span className="mont userSelectNone pointerEventsNone">
+                    Verva
+                  </span>
                 </Grid>
                 <Grid sx={footerMenuItem} onClick={browseStream}>
                   <span className="mont">Browse Subscriptions</span>
                 </Grid>
                 <Grid sx={footerMenuItem} onClick={openStream}>
                   <span className="mont">My Subscriptions</span>
+                </Grid>
+                <Grid sx={footerMenuItem} onClick={openComingSoon}>
+                  <span className="mont">Upcoming Titles</span>
                 </Grid>
                 <Grid sx={footerMenuItem} onClick={openAbout}>
                   <span className="mont">About</span>
@@ -66,7 +74,9 @@ function Footer() {
             <Grid>
               <Stack direction="column" justifyContent="left">
                 <Grid sx={footerMenuItemHeading}>
-                  <span className="mont">Account</span>
+                  <span className="mont userSelectNone pointerEventsNone">
+                    Account
+                  </span>
                 </Grid>
                 <Grid sx={footerMenuItem} onClick={openDashboard}>
                   <span className="mont">Dashboard</span>
@@ -86,7 +96,9 @@ function Footer() {
             <Grid>
               <Stack direction="column" justifyContent="left">
                 <Grid sx={footerMenuItemHeading}>
-                  <span className="mont">Connect with us</span>
+                  <span className="mont userSelectNone pointerEventsNone">
+                    Connect with us
+                  </span>
                 </Grid>
                 <Grid sx={footerMenuItem}>
                   <a href="https://www.youtube.com/" className="linkFooter">
@@ -105,8 +117,10 @@ function Footer() {
                 </Grid>
                 <br />
                 <Divider color="#888888" />
-                <Grid sx={footerMenuItem}>
-                  <span className="mont">&copy; Copyright Verva</span>
+                <Grid sx={footerMenuItem} className="pointerEventsNone">
+                  <span className="mont userSelectNone">
+                    &copy; Copyright Verva
+                  </span>
                 </Grid>
               </Stack>
             </Grid>

@@ -1,8 +1,7 @@
 // navbar
 
 export const navbarStyle = {
-  background:
-    "linear-gradient(0deg, rgba(45,45,45,1) 24%, rgba(38,38,38,1) 42%, rgba(34,34,34,1) 100%);",
+  background: "#222222",
 };
 
 // login / Register
@@ -83,6 +82,9 @@ export const submitButton = {
 export const ProfileMenuItem = {
   color: "#fdfdfd",
   padding: "10px 50px 10px 20px",
+  "&:hover": {
+    backgroundColor: "#292929",
+  },
 };
 
 export const AvatarStyle = {
@@ -125,4 +127,18 @@ export const footerMenuItemHeading = {
   fontSize: "12px",
   color: "#ffffff",
   margin: "10px 0",
+};
+
+// Divider
+
+export const headingDividerWhite = {
+  color: "#E51B23",
+  margin: "40px 0",
+  fontVariant: "small-caps",
+  "&::before": {
+    backgroundColor: "white",
+  },
+  "&::after": {
+    backgroundColor: "white",
+  },
 };

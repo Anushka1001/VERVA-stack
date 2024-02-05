@@ -1,0 +1,79 @@
+.PageNotFound {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: #e51b23;
+}
+
+.errorImage {
+    height: 30em;
+    width: auto;
+}
+
+.ImageContainer {
+    padding: 30px 0 60px 60px;
+    margin-right: 0;
+}
+
+.TextContainer {
+    color: #ffffff;
+    padding: 30px 60px 60px 0;
+}
+
+.bigText {
+    font-size: 8em;
+}
+
+.smallText {
+    font-size: 1.2em;
+}
+
+.PageNotFoundDeleted {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: #e51b23;
+
+}
+
+.ImageContainerDeleted {
+    text-align: center;
+    margin: 10em 0 15em 0;
+}
+
+.ImageContainerDeleted img {
+    height: 5em;
+    width: auto;
+}
+
+.ImageContainerDeleted div {
+    color: #ffffff;
+    margin: 1em 0 0 0;
+}
+
+
+@media screen and (max-width: 960px) {
+    .PageNotFound {
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .errorImage {
+        height: 20em;
+        width: auto;
+    }
+
+    .TextContainer {
+        color: #ffffff;
+        padding: 30px 45px 60px 45px;
+    }
+
+    .bigText {
+        font-size: 4em;
+    }
+
+    .smallText {
+        font-size: 1em;
+    }
+}

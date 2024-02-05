@@ -8,6 +8,8 @@ import Dashboard from "./Content/Dashboard/Dashboard";
 import MySubs from "./Content/MySubs/MySubs";
 import AddSubs from "./Content/AddSubs/AddSubs";
 import About from "./Content/About/About";
+import UpcomingTitles from "./Content/UpcomingTitles/UpcomingTitles";
+import AccountDeleted from "./Content/404/AccountDeleted";
 
 function Home() {
   return (
@@ -20,6 +22,8 @@ function Home() {
         <Route path="/My_Subscriptions" element={<MySubs />} />
         <Route path="/Browse_Subscriptions" element={<AddSubs />} />
         <Route path="/About" element={<About />} />
+        <Route path="/coming_soon" element={<UpcomingTitles />} />
+        <Route path="/account-deleted" element={<AccountDeleted />} />
       </Routes>
       <Footer />
     </Router>

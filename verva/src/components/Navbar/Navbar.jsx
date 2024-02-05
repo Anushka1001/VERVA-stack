@@ -92,7 +92,7 @@ const Navbar = () => {
         <img
           src="images/verva-white-full.png"
           alt="VERVA"
-          className="Navbar_logo"
+          className="Navbar_logo userSelectNone"
           onClick={navHome}
         />
         <Stack marginRight={3} spacing={2} direction="row" alignItems="center">
@@ -130,7 +130,7 @@ const Navbar = () => {
                   aria-haspopup="true"
                 >
                   <Avatar sx={ProfileAvatar}>
-                    <span className="stint">{userChar}</span>
+                    <span className="stint userSelectNone">{userChar}</span>
                   </Avatar>
                 </IconButton>
               </Tooltip>
@@ -152,22 +152,24 @@ const Navbar = () => {
       >
         <MenuItem sx={ProfileuserInfo}>
           <Avatar sx={ProfileAvatar}>
-            <span className="stint">{userChar}</span>
+            <span className="stint userSelectNone">{userChar}</span>
           </Avatar>
-          <span className="mont NavbarUser">{activeUserName}</span>
+          <span className="mont NavbarUser userSelectNone">
+            {activeUserName}
+          </span>
         </MenuItem>
         <MenuItem onClick={openProfile} sx={ProfileMenuItem}>
           <FaceIcon sx={AvatarStyle} fontSize="small" />
-          <span className="mont">Profile</span>
+          <span className="mont profileFont">Profile</span>
         </MenuItem>
         <MenuItem onClick={openProfile} sx={ProfileMenuItem}>
           <ManageAccountsIcon sx={AvatarStyle} fontSize="small" />
-          <span className="mont">My Account</span>
+          <span className="mont profileFont">My Account</span>
         </MenuItem>
         <Divider color="white" />
         <MenuItem onClick={handleLogout} sx={ProfileMenuItem}>
           <Logout fontSize="small" sx={AvatarStyle} />
-          <span className="mont">Logout</span>
+          <span className="mont profileFont">Logout</span>
         </MenuItem>
       </Menu>
     </AppBar>

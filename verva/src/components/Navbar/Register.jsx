@@ -1,4 +1,11 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  TextField,
+  IconButton,
+  InputAdornment,
+} from "@mui/material";
 import React, { useState } from "react";
 import {
   FormTextField,
@@ -8,6 +15,8 @@ import {
   submitButton,
 } from "../../Styles/Styles";
 import CloseIcon from "@mui/icons-material/Close";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { postDataToServer } from "../../server/apiCalls";
 import { useDispatch } from "react-redux";
 
@@ -35,6 +44,9 @@ function Register(props) {
     postDataToServer(dataToSend, dispatch);
     props.closeLogin();
   };
+
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   return (
     <>
@@ -109,13 +121,26 @@ function Register(props) {
                 }}
                 margin="dense"
                 size="small"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 sx={FormTextField}
                 label="Password"
                 onChange={(e) => {
                   setPass(e.target.value);
                 }}
-                error={pass < 8}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+                error={pass.length !== 0 && pass.length < 6}
                 helperText={!pass ? "" : "Do not share your password"}
               />
               <p className="mont signsText">

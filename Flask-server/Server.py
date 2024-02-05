@@ -33,6 +33,7 @@ with app.app_context():
 CORS(app, resources={r"/register": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 CORS(app, resources={r"/login": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 CORS(app, resources={r"/protected": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+CORS(app, resources={r"/update-name": {"origins": "http://localhost:3000"}}, supports_credentials=True)
 
 @app.route("/register", methods=['POST', 'GET'])
 def register():
@@ -103,6 +104,25 @@ def login():
 
     elif request.method == "GET":
         return jsonify({'message': 'This route is for user login'})
+
+@app.route("/update-name", methods=['PUT'])
+@jwt_required()
+def update_name():
+    try:
+        current_user = get_jwt_identity()
+        user = user_details.query.filter_by(user_id=current_user).first()
+        if not user:
+            return jsonify({'success': False, 'message': 'User not found'}), 404
+        new_name = request.json.get('name')
+        if not new_name:
+            return jsonify({'success': False, 'message': 'New name is required'}), 400
+        user.name = new_name
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'Name updated successfully'})
+
+    except Exception as e:
+        print(str(e))
+        return jsonify({"error": "Internal Server Error"}), 500
 
 @app.route('/protected', methods=['GET'])
 @jwt_required()

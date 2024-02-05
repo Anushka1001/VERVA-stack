@@ -1,4 +1,11 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Grid,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import React, { useState } from "react";
 import {
   FormTextField,
@@ -11,6 +18,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { loginUser } from "../../server/apiCalls";
 import { useDispatch } from "react-redux";
 import Register from "./Register";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
 
 function Login(props) {
   const dispatch = useDispatch();
@@ -33,6 +42,9 @@ function Login(props) {
     loginUser(userDataLogin, dispatch);
     props.closeLogin();
   };
+
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   return (
     <>
@@ -74,11 +86,25 @@ function Login(props) {
                   }}
                   margin="dense"
                   size="small"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   sx={FormTextField}
                   label="Password"
                   onChange={(e) => {
                     setPass(e.target.value);
+                  }}
+                  error={pass.length !== 0 && pass.length < 6}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
                   }}
                 />
               </Grid>

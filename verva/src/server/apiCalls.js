@@ -1,6 +1,8 @@
 import axios from './axios';
 import { login, token, userData } from '../store/action';
 
+const BASE_URL = "http://localhost:5000";
+
 export const postData = async (dataToSend) => {
     try {
         const response = await axios.post('/register', dataToSend);
@@ -50,9 +52,38 @@ export const loginUser = (userTocheck, dispatch) => {
             dispatch(userData(data.userDetails));
             dispatch(token(data.access_token))
             console.log("Server response:", data);
-            console.log("blahlogin", data.userDetails, "\n", data.access_token);
         })
         .catch((error) => {
             console.error('Error in postDataToServer:', error);
         });
+};
+
+export const updateNameInData = async (userToken, userDataLogin) => {
+    try {
+        const response = await fetch(`${BASE_URL}/update-name`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+            },
+            body: JSON.stringify({ name: userDataLogin.name }), // Ensure the correct field name
+        });
+
+        if (response.status === 200) {
+            // Success: return a success message or any relevant data
+            const data = await response.json();
+            return data;
+        } else if (response.status === 422) {
+            // Unprocessable Entity: log the error message
+            const errorData = await response.text();
+            console.error("Error updating name:", errorData);
+            throw new Error(errorData || "Failed to update name");
+        } else {
+            // Handle other status codes as needed
+            throw new Error(`Unexpected status code: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error updating name:", error);
+        throw error;
+    }
 };

@@ -5,7 +5,7 @@ const initialState = {
         userEmail: '',
         userAge: '',
     },
-    token: ''
+    token: '',
 };
 
 const vervaReducer = (state = initialState, action) => {
@@ -23,6 +23,14 @@ const vervaReducer = (state = initialState, action) => {
             return {
                 ...state,
                 user: action.payload,
+            };
+        case 'USERNAME':
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    name: action.payload.userName,
+                },
             };
         case 'TOKEN':
             return {
