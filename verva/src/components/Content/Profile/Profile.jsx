@@ -18,6 +18,7 @@ function Profile() {
   const valueHeading = "Profile";
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const activeUserName = useSelector((state) => state.user.name);
+  const token = useSelector((state) => state.token);
 
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -72,7 +73,7 @@ function Profile() {
             <div style={{ flex: 1, padding: 20 }}>
               {value === 0 && <ViewProfile />}
               {value === 1 && <ManageSubscription />}
-              {value === 2 && <ManageAccount />}
+              {value === 2 && <ManageAccount token={token} />}
             </div>
           </Paper>
         </>

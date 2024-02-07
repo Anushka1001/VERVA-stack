@@ -14,7 +14,7 @@ function PageNotFound() {
           <img
             src="./images/soon.png"
             className="errorImage"
-            alt="comming Soon"
+            alt="coming Soon"
           />
         )}
       </span>

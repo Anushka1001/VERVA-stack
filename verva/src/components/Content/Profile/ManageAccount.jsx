@@ -5,8 +5,9 @@ import { red } from "@mui/material/colors";
 import { logout } from "../../../store/action";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { deleteUser } from "../../../server/apiCalls";
 
-function ManageAccount() {
+function ManageAccount(props) {
   const [confirm, setConfirm] = React.useState(false);
   const [error, setError] = React.useState(false);
   const [buttonClicked, setButtonClicked] = React.useState(false);
@@ -18,8 +19,10 @@ function ManageAccount() {
   };
 
   const deleteAccount = () => {
+    const userToken = props.token;
     setButtonClicked(true);
     if (confirm === true && buttonClicked) {
+      deleteUser(userToken);
       dispatch(logout());
       navigate("/account-deleted");
       setTimeout(() => {
@@ -36,8 +39,10 @@ function ManageAccount() {
       <div className="ViewProfile">
         <div className="deleteValue montAlt">
           Once you choose to proceed with account deletion, all your personal
-          data and account information will be permanently erased, ensuring a
-          clean break from our platform.
+          data and account information will be erased.
+          <br />
+          After 30 days all data will be deleted permanently, ensuring a clean
+          break from our platform.
         </div>
         {error && !confirm ? (
           <div className="deleteError">
@@ -48,7 +53,6 @@ function ManageAccount() {
           ""
         )}
         <div className="deleteCheck montAlt">
-          I want to Delete my Account Permanently!
           <Checkbox
             checked={confirm}
             onChange={handleConfirm}
@@ -59,6 +63,7 @@ function ManageAccount() {
               },
             }}
           />
+          I want to Delete my Account Permanently!
         </div>
         <Button
           variant="standard"

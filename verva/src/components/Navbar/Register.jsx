@@ -18,7 +18,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { postDataToServer } from "../../server/apiCalls";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function Register(props) {
   const dispatch = useDispatch();
@@ -42,9 +42,12 @@ function Register(props) {
 
   const handleSignUp = () => {
     postDataToServer(dataToSend, dispatch);
-    props.closeLogin();
+    if (emailOrPassWrong) {
+      props.closeLogin();
+    }
   };
 
+  const emailOrPassWrong = useSelector((state) => state.check);
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 

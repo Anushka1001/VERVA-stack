@@ -10,6 +10,7 @@ import AddSubs from "./Content/AddSubs/AddSubs";
 import About from "./Content/About/About";
 import UpcomingTitles from "./Content/UpcomingTitles/UpcomingTitles";
 import AccountDeleted from "./Content/404/AccountDeleted";
+import AccountInfo from "./Content/AccountsInfo/AccountInfo";
 
 function Home() {
   return (
@@ -24,6 +25,7 @@ function Home() {
         <Route path="/About" element={<About />} />
         <Route path="/coming_soon" element={<UpcomingTitles />} />
         <Route path="/account-deleted" element={<AccountDeleted />} />
+        <Route path="/Account" element={<AccountInfo />} />
       </Routes>
       <Footer />
     </Router>

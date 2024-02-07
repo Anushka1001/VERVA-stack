@@ -15,3 +15,8 @@ export const token = (token) => ({
     type: 'TOKEN',
     payload: token,
 })
+
+export const emailOrPassWrong = (check) => ({
+    type: 'CHECKEMAILORPASSWORD',
+    payload: check,
+})

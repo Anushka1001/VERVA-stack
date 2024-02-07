@@ -68,6 +68,27 @@ export const FormTextField = {
   border: "none",
 };
 
+export const FormTextFieldPassword = {
+  borderRadius: "10px 10px 0 0",
+  border: "none",
+  margin: "1em 3em 0 0",
+  "& .MuiInputBase-root": {
+    backgroundColor: "#cdcdcd",
+  },
+  "& .MuiInputBase-root:hover": {
+    backgroundColor: "#dfdfdf",
+  },
+  "& .MuiInputBase-root:focus": {
+    backgroundColor: "#dfdfdf",
+  },
+  "& .MuiInputLabel-root": {
+    color: "black",
+  },
+  "& .MuiInput-underline:after": {
+    borderBottomColor: "black",
+  },
+};
+
 export const submitButton = {
   backgroundColor: "#E51B23",
   padding: "10px",

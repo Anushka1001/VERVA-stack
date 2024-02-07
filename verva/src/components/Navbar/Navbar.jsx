@@ -43,12 +43,16 @@ const Navbar = () => {
     navigate("/Profile");
     handleClose();
   };
+  const openAccount = () => {
+    navigate("/Account");
+    handleClose();
+  };
   const openDashboard = () => {
     navigate("/Dashboard");
     handleClose();
   };
   const openStream = () => {
-    navigate("/My Subscriptions");
+    navigate("/My_Subscriptions");
     handleClose();
   };
 
@@ -56,7 +60,6 @@ const Navbar = () => {
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-    console.log("current user", activeUserName);
   };
   const handleClose = () => {
     setAnchorEl(null);
@@ -162,7 +165,7 @@ const Navbar = () => {
           <FaceIcon sx={AvatarStyle} fontSize="small" />
           <span className="mont profileFont">Profile</span>
         </MenuItem>
-        <MenuItem onClick={openProfile} sx={ProfileMenuItem}>
+        <MenuItem onClick={openAccount} sx={ProfileMenuItem}>
           <ManageAccountsIcon sx={AvatarStyle} fontSize="small" />
           <span className="mont profileFont">My Account</span>
         </MenuItem>

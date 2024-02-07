@@ -20,6 +20,9 @@ function Footer() {
   const openProfile = () => {
     navigate("/Profile");
   };
+  const openAccountPage = () => {
+    navigate("/Account");
+  };
   const openStream = () => {
     navigate("/My_Subscriptions");
   };
@@ -34,6 +37,7 @@ function Footer() {
   const handleLogout = () => {
     console.log("User Logging out");
     dispatch(logout());
+    navigate("/");
   };
 
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
@@ -83,6 +87,9 @@ function Footer() {
                 </Grid>
                 <Grid sx={footerMenuItem} onClick={openProfile}>
                   <span className="mont">Profile</span>
+                </Grid>
+                <Grid sx={footerMenuItem} onClick={openAccountPage}>
+                  <span className="mont">My Account</span>
                 </Grid>
                 {isAuthenticated ? (
                   <Grid sx={footerMenuItem} onClick={handleLogout}>

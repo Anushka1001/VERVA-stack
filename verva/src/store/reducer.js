@@ -6,6 +6,7 @@ const initialState = {
         userAge: '',
     },
     token: '',
+    check: false
 };
 
 const vervaReducer = (state = initialState, action) => {
@@ -37,6 +38,11 @@ const vervaReducer = (state = initialState, action) => {
                 ...state,
                 token: action.payload,
             };
+        case 'CHECKEMAILORPASSWORD':
+            return {
+                ...state,
+                check: action.payload,
+            }
         default:
             return state;
     }
