@@ -13,7 +13,7 @@ function AccountDeleted() {
   return (
     <div className="PageNotFoundDeleted userSelectNone pointerEventsNone">
       <span className="ImageContainerDeleted">
-        <img src="./images/sad.png" alt="Account Deleted So I'm Sad" />
+        <img src="./images/sad.png" alt="Account Deleted" />
         <div className="smallText montAlt">
           Your account has been deleted. Sad to see you go.
           <br />

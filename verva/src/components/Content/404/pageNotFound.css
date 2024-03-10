@@ -77,3 +77,30 @@
         font-size: 1em;
     }
 }
+
+.loginPage {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    background-color: #e51b23;
+    padding: 3em;
+}
+
+.loginImageDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginImage {
+    width: 90%;
+    user-select: none;
+    pointer-events: none;
+    padding: 0 0 0 13vh;
+}
+
+@media screen and (max-width: 899px) {
+    .loginImageDiv {
+        display: none;
+    }
+}

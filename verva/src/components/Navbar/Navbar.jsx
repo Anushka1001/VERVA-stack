@@ -69,6 +69,7 @@ const Navbar = () => {
     console.log("User Logging out");
     dispatch(logout());
     handleClose();
+    navigate("/");
   };
 
   const [openBackdrop, setOpenBackdrop] = useState(false);
@@ -109,7 +110,7 @@ const Navbar = () => {
                 sx={{ backgroundColor: "rgba(0, 0, 0, 0.75)" }}
                 className="margin0"
               >
-                {showLogin && <Login closeLogin={closeLogin} />}
+                {showLogin && <Login closeLogin={closeLogin} place="Navbar" />}
               </Backdrop>
             </>
           ) : (

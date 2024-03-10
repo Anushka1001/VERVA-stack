@@ -54,6 +54,8 @@ function ManageAccount(props) {
         )}
         <div className="deleteCheck montAlt">
           <Checkbox
+            id="checkbox"
+            name="checkbox"
             checked={confirm}
             onChange={handleConfirm}
             sx={{

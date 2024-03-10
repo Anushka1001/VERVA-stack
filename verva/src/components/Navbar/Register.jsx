@@ -26,6 +26,9 @@ function Register(props) {
   const [pass, setPass] = useState("");
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
+  const [errorMail, setErrorMail] = useState(false);
+  const [errorAge, setErrorAge] = useState(false);
+  const [errorPass, setErrorPass] = useState(false);
   const dataToSend = {
     user_email: email,
     user_password: pass,
@@ -34,22 +37,55 @@ function Register(props) {
   };
 
   const isLogin = props.isLogin;
+  const emailOrPassWrong = useSelector((state) => state.check);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleToggleScreen = (isLogin) => {
     console.log("toggle signup to login");
     props.setIsLogin(!isLogin);
   };
 
+  const isValidEmail = (email) => {
+    if (!email) {
+      return true;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const isValidAge = (age) => {
+    return Number(age) >= 16 && Number(age) <= 100;
+  };
+
+  const isValidPassword = (password) => {
+    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
+    return pattern.test(password);
+  };
+
   const handleSignUp = () => {
+    if (!isValidEmail(email)) {
+      setErrorMail(true);
+      return;
+    }
+    if (!isValidAge(age)) {
+      setErrorAge(true);
+      return;
+    }
+    if (!isValidPassword(pass)) {
+      setErrorPass(true);
+      return;
+    }
     postDataToServer(dataToSend, dispatch);
     if (emailOrPassWrong) {
       props.closeLogin();
     }
   };
 
-  const emailOrPassWrong = useSelector((state) => state.check);
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const handleChangeMail = (event) => {
+    setEmail(event.target.value);
+    setErrorMail(!isValidEmail(event.target.value));
+  };
 
   return (
     <>
@@ -85,9 +121,8 @@ function Register(props) {
                 variant="filled"
                 id="age"
                 required
-                inputProps={{
-                  min: 16,
-                  max: 90,
+                InputProps={{
+                  inputProps: { min: 16, max: 100 },
                 }}
                 fullWidth
                 margin="dense"
@@ -98,6 +133,8 @@ function Register(props) {
                 onChange={(e) => {
                   setAge(e.target.value);
                 }}
+                error={errorAge}
+                helperText={errorAge ? "Age must be between 16 and 100" : ""}
               />
               <TextField
                 variant="filled"
@@ -109,9 +146,9 @@ function Register(props) {
                 type="email"
                 sx={FormTextField}
                 label="Email"
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                }}
+                onChange={handleChangeMail}
+                error={errorMail}
+                helperText={errorMail ? "Invalid email" : ""}
               />
               <TextField
                 variant="filled"
@@ -130,6 +167,12 @@ function Register(props) {
                 onChange={(e) => {
                   setPass(e.target.value);
                 }}
+                error={errorPass}
+                helperText={
+                  errorPass
+                    ? "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number"
+                    : ""
+                }
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -143,8 +186,8 @@ function Register(props) {
                     </InputAdornment>
                   ),
                 }}
-                error={pass.length !== 0 && pass.length < 6}
-                helperText={!pass ? "" : "Do not share your password"}
+                // error={pass.length !== 0 && pass.length < 6}
+                // helperText={!pass ? "" : "Do not share your password"}
               />
               <p className="mont signsText">
                 Already a member?
@@ -167,9 +210,13 @@ function Register(props) {
             </Grid>
           </Grid>
         </Box>
-        <Button onClick={props.closeLogin} sx={closeButton}>
-          <CloseIcon />
-        </Button>
+        {props.place === "Navbar" ? (
+          <Button onClick={props.closeLogin} sx={closeButton}>
+            <CloseIcon />
+          </Button>
+        ) : (
+          ""
+        )}
       </Grid>
     </>
   );

@@ -1,27 +1,23 @@
 import React from "react";
-import Grid from "@mui/material/Unstable_Grid2";
-import MySubs from "./MySubs/MySubs";
-import AddSubs from "./AddSubs/AddSubs";
+import MySubsHome from "./MySubs/MySubsHome";
+import AddSubsHome from "./AddSubs/AddSubsHome";
 import SubsManager from "./SubsManager/SubsManager";
-import UpcomingTitles from "./UpcomingTitles/UpcomingTitles";
+import UpcomingTitlesHome from "./UpcomingTitles/UpcomingTitlesHome";
+import LiveStreamHome from "./LiveStream/LiveStreamHome.jsx";
+import CarouselPage from "./Carousel/Carousel.jsx";
+import BlockShow from "./Block/BlockShow.jsx";
 
 function Content() {
   return (
-    <div className="content">
-      <Grid className="border">carousal</Grid>
-      <Grid className="border">
-        <MySubs />
-      </Grid>
-      <Grid className="border">
-        <AddSubs />
-      </Grid>
-      <Grid className="border">
-        <SubsManager />
-      </Grid>
-      <Grid className="border">
-        <UpcomingTitles />
-      </Grid>
-    </div>
+    <>
+      <CarouselPage />
+      <MySubsHome />
+      <LiveStreamHome />
+      <AddSubsHome />
+      <UpcomingTitlesHome />
+      <BlockShow />
+      <SubsManager />
+    </>
   );
 }
 

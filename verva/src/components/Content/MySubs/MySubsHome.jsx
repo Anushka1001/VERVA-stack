@@ -3,11 +3,17 @@ import CardsPages from "../Template/CardsPages";
 import data from "../../../data/subscriptions.json";
 
 function AddSubs() {
-  const textHeading = "BROWSE SUBSCRIPTIONS";
+  const textHeading = "My Subscriptions";
 
   return (
     <div>
-      <CardsPages data={data} title={textHeading} length={data.length} />
+      <CardsPages
+        data={data}
+        title={textHeading}
+        length={4}
+        loc="home"
+        linkLoc="My_Subscriptions"
+      />
     </div>
   );
 }

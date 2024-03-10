@@ -21,8 +21,8 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { FormTextFieldPassword } from "../../../Styles/Styles";
 import "./AccountInfo.css";
-import Heading from "../../Heading";
 import { deleteUser, updatePassInData } from "../../../server/apiCalls";
+import Heading from "../Template/Heading";
 
 function AccountInfo() {
   const dispatch = useDispatch();
@@ -102,7 +102,7 @@ function AccountInfo() {
         <PageNotFound />
       ) : (
         <>
-          <Heading value="Account Information & Management" />
+          <Heading value="Account Information & Management" align="left" />
           <div className="AccountInfo">
             {Object.keys(userInfo).map((key) => (
               <div key={key}>

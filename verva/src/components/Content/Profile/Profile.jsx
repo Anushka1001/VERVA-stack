@@ -1,5 +1,4 @@
 import React from "react";
-import Heading from "../../Heading";
 import { Tabs, Tab, Paper, Avatar } from "@mui/material";
 import {
   ProfilePageAvatar,
@@ -13,6 +12,7 @@ import PageNotFound from "../404/pageNotFound";
 import ViewProfile from "./ViewProfile";
 import ManageAccount from "./ManageAccount";
 import ManageSubscription from "./ManageSubscription";
+import Heading from "../Template/Heading";
 
 function Profile() {
   const valueHeading = "Profile";
@@ -36,7 +36,7 @@ function Profile() {
         <PageNotFound />
       ) : (
         <>
-          <Heading value={valueHeading} />
+          <Heading value={valueHeading} align="left" />
           <div className="ProfileInfo">
             <Avatar sx={ProfilePageAvatar} className="ProfilePageAvatar">
               <span className="stint userSelectNone">{userChar}</span>

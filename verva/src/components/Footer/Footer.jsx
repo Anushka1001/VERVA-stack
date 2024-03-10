@@ -40,6 +40,11 @@ function Footer() {
     navigate("/");
   };
 
+  const handleLogin = () => {
+    console.log("User trying to log in");
+    navigate("/login");
+  };
+
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
 
   return (
@@ -96,7 +101,9 @@ function Footer() {
                     <span className="mont">Log Out</span>
                   </Grid>
                 ) : (
-                  ""
+                  <Grid sx={footerMenuItem} onClick={handleLogin}>
+                    <span className="mont">Log In</span>
+                  </Grid>
                 )}
               </Stack>
             </Grid>

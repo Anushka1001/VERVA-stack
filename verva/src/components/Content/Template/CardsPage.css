@@ -1,0 +1,13 @@
+.descriptionHome {
+    margin: 0 5%;
+    color: #bbbbbb;
+    text-align: right;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 2px 0;
+}
+
+.descriptionHome:hover {
+    text-decoration: underline;
+}

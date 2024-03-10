@@ -25,7 +25,7 @@ export const PaperStyle = {
   backgroundColor: "#ffffff",
   padding: "12px",
   width: "18lh",
-  height: "70vh",
+  height: "auto",
   borderRadius: "15px",
 };
 
@@ -34,7 +34,7 @@ export const PaperStyle2 = {
   backgroundColor: "#fcfcfc",
   padding: "12px",
   width: "30lh",
-  height: "70vh",
+  height: "auto",
   borderRadius: "15px",
 };
 
@@ -153,8 +153,8 @@ export const footerMenuItemHeading = {
 // Divider
 
 export const headingDividerWhite = {
-  color: "#E51B23",
-  margin: "40px 0",
+  color: "#ff504a",
+  margin: "40px 0 20px",
   fontVariant: "small-caps",
   "&::before": {
     backgroundColor: "white",
@@ -162,4 +162,21 @@ export const headingDividerWhite = {
   "&::after": {
     backgroundColor: "white",
   },
+};
+
+// Carousel
+
+export const timelyDots = {
+  width: "10px",
+  height: "10px",
+  borderRadius: "50%",
+  margin: "0 4px",
+  padding: 0,
+  minWidth: "unset",
+};
+
+export const BlockHomeDiv = {
+  display: "flex",
+  justifyContent: "center",
+  margin: "20px 100px",
 };

@@ -32,19 +32,46 @@ function Login(props) {
   };
 
   const [isLogin, setIsLogin] = useState(false);
+  const [errorMail, setErrorMail] = useState(false);
+  const [error, setError] = useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleToggleScreen = (isLogin) => {
     console.log("toggle login to signup");
     setIsLogin(!isLogin);
   };
 
+  const handleChange = (event) => {
+    setEmail(event.target.value);
+    setErrorMail(!isValidEmail(event.target.value));
+  };
+
+  const isValidEmail = (email) => {
+    if (!email) {
+      return true;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const isValidPassword = (password) => {
+    const pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$/;
+    return pattern.test(password);
+  };
+
   const handleLogin = () => {
+    if (!isValidEmail(email)) {
+      setErrorMail(true);
+      return;
+    }
+    if (!isValidPassword(pass)) {
+      setError(true);
+      return;
+    }
     loginUser(userDataLogin, dispatch);
     props.closeLogin();
   };
-
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   return (
     <>
@@ -71,9 +98,9 @@ function Login(props) {
                   type="email"
                   sx={FormTextField}
                   label="Email"
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
+                  onChange={handleChange}
+                  error={errorMail}
+                  helperText={errorMail ? "Invalid email" : ""}
                 />
                 <TextField
                   variant="filled"
@@ -92,7 +119,12 @@ function Login(props) {
                   onChange={(e) => {
                     setPass(e.target.value);
                   }}
-                  error={pass.length !== 0 && pass.length < 6}
+                  error={error}
+                  helperText={
+                    error
+                      ? "Password must contain at least 8 characters, including one uppercase letter, one lowercase letter, and one number"
+                      : ""
+                  }
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
@@ -128,15 +160,20 @@ function Login(props) {
               </Button>
             </Grid>
           </Box>
-          <Button onClick={props.closeLogin} sx={closeButton}>
-            <CloseIcon />
-          </Button>
+          {props.place === "Navbar" ? (
+            <Button onClick={props.closeLogin} sx={closeButton}>
+              <CloseIcon />
+            </Button>
+          ) : (
+            ""
+          )}
         </Grid>
       ) : (
         <Register
           isLogin={isLogin}
           setIsLogin={setIsLogin}
           closeLogin={props.closeLogin}
+          place={props.place ?? ""}
         />
       )}
     </>

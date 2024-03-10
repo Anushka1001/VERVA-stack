@@ -5,6 +5,7 @@
 body {
     margin: 0;
     background-color: #2d2d2d;
+    overflow-x: hidden;
 }
 
 .mont {
@@ -24,14 +25,28 @@ body {
     margin: 20px;
 }
 
-.content {
-    margin-top: 100px;
-}
-
-.displayFlex {
-    display: flex;
-}
-
 .white {
     color: white;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    background: #2e2e2e;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #585858;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d4191f;
+}
+
+::selection {
+    background-color: #4e4e4e;
+    color: #fd7f83;
 }

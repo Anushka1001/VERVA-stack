@@ -6,6 +6,8 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies
 from datetime import timedelta
 
+localhost = "http://localhost:3000"
+
 app = Flask(__name__)
 
 bcrypt = Bcrypt(app)
@@ -45,12 +47,12 @@ class saved_user_details(db.Model):
 with app.app_context():
     db.create_all()
 
-CORS(app, resources={r"/register": {"origins": "http://localhost:3000"}}, supports_credentials=True)
-CORS(app, resources={r"/login": {"origins": "http://localhost:3000"}}, supports_credentials=True)
-CORS(app, resources={r"/protected": {"origins": "http://localhost:3000"}}, supports_credentials=True)
-CORS(app, resources={r"/update-name": {"origins": "http://localhost:3000"}}, supports_credentials=True)
-CORS(app, resources={r"/update-pass": {"origins": "http://localhost:3000"}}, supports_credentials=True)
-CORS(app, resources={r"/delete-account": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+CORS(app, resources={r"/register": {"origins": localhost}}, supports_credentials=True)
+CORS(app, resources={r"/login": {"origins": localhost}}, supports_credentials=True)
+CORS(app, resources={r"/protected": {"origins": localhost}}, supports_credentials=True)
+CORS(app, resources={r"/update-name": {"origins": localhost}}, supports_credentials=True)
+CORS(app, resources={r"/update-pass": {"origins": localhost}}, supports_credentials=True)
+CORS(app, resources={r"/delete-account": {"origins": localhost}}, supports_credentials=True)
 
 # route for registring a user
 @app.route("/register", methods=['POST', 'GET'])
@@ -83,7 +85,7 @@ def register():
             response = make_response(jsonify(response_data), 200)
             set_access_cookies(response, access_token)
 
-            response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+            response.headers.add("Access-Control-Allow-Origin", localhost)
             response.headers.add("Access-Control-Allow-Credentials", "true")
 
             return response
@@ -97,7 +99,7 @@ def register():
     except Exception as e:
         print(str(e))
         response = make_response(jsonify({"error": "Internal Server Error"}), 500)
-        response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+        response.headers.add("Access-Control-Allow-Origin", localhost)
         response.headers.add("Access-Control-Allow-Credentials", "true")
         return response
 
