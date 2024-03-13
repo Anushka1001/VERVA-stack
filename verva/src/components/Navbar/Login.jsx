@@ -73,6 +73,12 @@ function Login(props) {
     props.closeLogin();
   };
 
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleLogin();
+    }
+  };
+
   return (
     <>
       {!isLogin ? (
@@ -155,6 +161,8 @@ function Login(props) {
                 sx={submitButton}
                 variant="contained"
                 onClick={handleLogin}
+                onKeyPress={handleKeyPress}
+                tabIndex={0}
               >
                 <span className="mont submitButton">Login</span>
               </Button>

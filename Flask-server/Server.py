@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies
 from datetime import timedelta
+from functions import generate_user_id
 
 localhost = "http://localhost:3000"
 
@@ -24,25 +25,27 @@ class user_details(db.Model):
     __tablename__ = 'users_registered'
     user_id = db.Column(db.String(12), primary_key=True, unique=True, default=str(uuid.uuid4()))
     email = db.Column(db.String(50), primary_key=True, unique=True, nullable=False)
+    v_id = db.Column(db.String(8), unique=True, nullable=False)
     user_password = db.Column(db.String(50), nullable=False)
     user_password_inText = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     age = db.Column(db.Integer, nullable=False)
 
     def __repr__(self) -> str:
-        return f"{self.user_id} - {self.email} - {self.user_password} - {self.name} - {self.age} - {self.user_password_inText}"
+        return f"{self.user_id} - {self.email} - {self.user_password} - {self.name} - {self.age} - {self.user_password_inText} - {self.v_id}"
 
 # table for deleted user data saved for next 10 months or 300 days
 class saved_user_details(db.Model):
     __tablename__ = 'saved_user_details'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    v_id = db.Column(db.String(8), unique=True, nullable=False)
     email = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     age = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f"{self.email} - {self.password} - {self.name} - {self.age}"
+        return f"{self.email} - {self.password} - {self.name} - {self.age} - {self.v_id}"
 
 with app.app_context():
     db.create_all()
@@ -66,9 +69,12 @@ def register():
             user_id = str(uuid.uuid4())
             while user_details.query.filter_by(user_id=user_id).first():
                 user_id = str(uuid.uuid4())
+            v_id = generate_user_id()
+            while user_details.query.filter_by(v_id=v_id).first():
+                v_id = generate_user_id()
 
             hashed_password = bcrypt.generate_password_hash(user_password_recieved).decode('utf-8')
-            userDetails = user_details(user_id=user_id, email=user_email, user_password=hashed_password, user_password_inText=user_password_recieved, name=name, age=age)
+            userDetails = user_details(user_id=user_id, email=user_email, user_password=hashed_password, user_password_inText=user_password_recieved, name=name, age=age, v_id=v_id)
             db.session.add(userDetails)
             db.session.commit()
 
@@ -78,7 +84,7 @@ def register():
             response_data = {
                 "success": True,
                 "message": "User registered successfully",
-                "user": {'email': userDetails.email, 'name': userDetails.name, 'age': userDetails.age},
+                "user": {'email': userDetails.email, 'name': userDetails.name, 'age': userDetails.age, 'v_id':userDetails.v_id},
                 "token": access_token
             }
 
@@ -92,7 +98,7 @@ def register():
 
         elif request.method == "GET":
             user_details_list = user_details.query.all()
-            user_details_dicts = [{'id': user.user_id, 'email': user.email, 'user_password': user.user_password, 'name': user.name, 'age': user.age, 'user_password_inText': user.user_password_inText,} for user in user_details_list]
+            user_details_dicts = [{'id': user.user_id, 'email': user.email, 'user_password': user.user_password, 'name': user.name, 'age': user.age, 'user_password_inText': user.user_password_inText, 'v_id':user.v_id} for user in user_details_list]
             response = make_response(jsonify(user_details_list=user_details_dicts), 200)
             return response
 
@@ -115,7 +121,8 @@ def login():
             user_name = user.name
             user_email = user.email
             user_age = user.age
-            userDetails = {"name": user_name, "email": user_email, "age": user_age}
+            v_id = user.v_id
+            userDetails = {"name": user_name, "email": user_email, "age": user_age, "v_id":v_id}
             access_token = create_access_token(identity=user_id)
             response = jsonify({'success': True, 'message': 'Login successful', 'access_token': access_token, 'userDetails': userDetails})
             set_access_cookies(response, access_token)
@@ -174,14 +181,6 @@ def update_pass():
         print(str(e))
         return jsonify({"error": "Internal Server Error"}), 500
 
-# function for checking timer of 1 month
-# def query_and_delete_old_entries():
-#     one_months_ago = datetime.utcnow() - timedelta(days=30)
-#     old_entries = saved_user_details.query.filter(saved_user_details.creation_date >= one_months_ago).all()
-#     for entry in old_entries:
-#         db.session.delete(entry)
-#     db.session.commit()
-
 # route for deleting an account
 @app.route("/delete-account", methods=['DELETE'])
 @jwt_required()
@@ -193,7 +192,7 @@ def delete_account():
             return jsonify({'success': False, 'message': 'User not found'}), 404
         else:
             saved_user = saved_user_details(email=user.email, password=user.user_password_inText,
-                                            name=user.name, age=user.age)
+                                            name=user.name, age=user.age, v_id=user.v_id)
             db.session.add(saved_user)
             db.session.delete(user)
             db.session.commit()

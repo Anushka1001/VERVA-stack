@@ -43,14 +43,18 @@ function Carousel() {
     setTerm(newTerm);
   };
 
+  const dataUsed = data.slice(0, 4);
+
   return (
     <>
-      <Grid container className="carousel" key={data[term].title}>
+      <Grid container className="carousel" key={dataUsed[term].title}>
         <Grid item sm={12} md={6} lg={4} xl={4} className="carousel_data">
           <div className="carousel_text">
-            <div className="title_heading mont">{data[term].title}</div>
-            <Tooltip title={data[term].desc} arrow placement="right">
-              <div className="title_description stint">{data[term].desc}</div>
+            <div className="title_heading mont">{dataUsed[term].title}</div>
+            <Tooltip title={dataUsed[term].desc} arrow placement="right">
+              <div className="title_description stint">
+                {dataUsed[term].desc}
+              </div>
             </Tooltip>
             <div className="title_button stint">
               {!isAuthenticated ? (
@@ -67,10 +71,10 @@ function Carousel() {
                   sx={buttonStyle}
                   onClick={() =>
                     handlePlay(
-                      data[term].id,
-                      data[term].title,
-                      data[term].image,
-                      data[term].desc
+                      dataUsed[term].id,
+                      dataUsed[term].title,
+                      dataUsed[term].image,
+                      dataUsed[term].desc
                     )
                   }
                 >
@@ -80,7 +84,7 @@ function Carousel() {
             </div>
           </div>
           <ButtonGroup className="carousel-selector-container">
-            {data.map((_, index) => (
+            {dataUsed.map((_, index) => (
               <Button
                 key={index}
                 variant="contained"
@@ -98,7 +102,7 @@ function Carousel() {
         </Grid>
         <div
           className="carousel-background"
-          style={{ backgroundImage: `url(${data[term].image})` }}
+          style={{ backgroundImage: `url(${dataUsed[term].image})` }}
         ></div>
       </Grid>
     </>

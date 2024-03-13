@@ -6,12 +6,15 @@ import UpcomingTitlesHome from "./UpcomingTitles/UpcomingTitlesHome";
 import LiveStreamHome from "./LiveStream/LiveStreamHome.jsx";
 import CarouselPage from "./Carousel/Carousel.jsx";
 import BlockShow from "./Block/BlockShow.jsx";
+import { useSelector } from "react-redux";
 
 function Content() {
+  const isAuthenticated = useSelector((state) => state.isAuthenticated);
+
   return (
     <>
       <CarouselPage />
-      <MySubsHome />
+      {isAuthenticated ? <MySubsHome /> : ""}
       <LiveStreamHome />
       <AddSubsHome />
       <UpcomingTitlesHome />

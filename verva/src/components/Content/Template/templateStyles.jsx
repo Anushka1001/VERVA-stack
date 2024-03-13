@@ -19,6 +19,13 @@ export const playButton = {
   transition: "opacity 0.3s",
 };
 
+export const liveButton = {
+  color: "#E51B23",
+  position: "absolute",
+  top: "1.5%",
+  left: "1%",
+};
+
 export const cardValue = {
   position: "relative",
   "&:hover": {

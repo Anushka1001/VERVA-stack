@@ -23,7 +23,7 @@ export const postDataToServer = (dataToSend, dispatch) => {
             dispatch(userData(data.user));
             dispatch(token(data.token))
             console.log("Server response:", data);
-            console.log("blah", data.user, "\n", data.token);
+            console.log("userData", data.user, "\n", data.token);
         })
         .catch((error) => {
             console.error('Error in postDataToServer:', error);

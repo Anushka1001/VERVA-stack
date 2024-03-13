@@ -30,11 +30,14 @@ import { logout } from "../../store/action";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const activeUserName = useSelector((state) => state.user.name);
-  const dispatch = useDispatch();
+  const activeUserVirtualId = useSelector((state) => state.user.v_id);
+  const streamBool = useSelector((state) => state.streamBool);
 
-  const navigate = useNavigate();
   const navHome = () => {
     navigate("/");
     handleClose();
@@ -48,12 +51,26 @@ const Navbar = () => {
     handleClose();
   };
   const openDashboard = () => {
-    navigate("/Dashboard");
-    handleClose();
+    navigate(`/Dashboard/${activeUserVirtualId}`, {
+      state: {
+        v_id: activeUserVirtualId,
+      },
+    });
   };
   const openStream = () => {
-    navigate("/My_Subscriptions");
+    navigate("/LiveStream");
     handleClose();
+  };
+  const openBrowseMenu = () => {
+    navigate("/Browse_Subscriptions");
+    handleClose();
+  };
+  const goLive = () => {
+    navigate(`/GoLive/${activeUserVirtualId}`, {
+      state: {
+        v_id: activeUserVirtualId,
+      },
+    });
   };
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -115,15 +132,35 @@ const Navbar = () => {
             </>
           ) : (
             <>
+              {streamBool ? (
+                <>
+                  <Button
+                    variant="contained"
+                    sx={buttonStyle}
+                    onClick={() => openDashboard()}
+                  >
+                    Dashboard
+                  </Button>
+                  <Button
+                    variant="contained"
+                    sx={buttonStyle}
+                    onClick={() => goLive()}
+                  >
+                    Go Live
+                  </Button>
+                </>
+              ) : (
+                <></>
+              )}
+              <Button variant="contained" sx={buttonStyle} onClick={openStream}>
+                Stream
+              </Button>
               <Button
                 variant="contained"
                 sx={buttonStyle}
-                onClick={openDashboard}
+                onClick={openBrowseMenu}
               >
-                Dashboard
-              </Button>
-              <Button variant="contained" sx={buttonStyle} onClick={openStream}>
-                Stream
+                Browse
               </Button>
               <Tooltip title="My Account">
                 <IconButton

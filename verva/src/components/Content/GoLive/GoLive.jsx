@@ -1,14 +1,14 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 
-function Dashboard() {
+function GoLive() {
   const { id } = useParams();
   return (
     <div>
-      <>Dashboard</>
+      <>GOLIVE</>
       <p>{id}</p>
     </div>
   );
 }
 
-export default Dashboard;
+export default GoLive;

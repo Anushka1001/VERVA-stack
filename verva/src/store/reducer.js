@@ -4,9 +4,11 @@ const initialState = {
         userName: '',
         userEmail: '',
         userAge: '',
+        virtual_id: ''
     },
     token: '',
-    check: false
+    check: false,
+    streamBool: false,
 };
 
 const vervaReducer = (state = initialState, action) => {
@@ -42,6 +44,11 @@ const vervaReducer = (state = initialState, action) => {
             return {
                 ...state,
                 check: action.payload,
+            }
+        case 'STREAMBOOL':
+            return {
+                ...state,
+                streamBool: true,
             }
         default:
             return state;

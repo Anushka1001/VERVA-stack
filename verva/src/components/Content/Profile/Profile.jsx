@@ -60,7 +60,7 @@ function Profile() {
                 sx={value === 0 ? selectedTabStyle : {}}
               />
               <Tab
-                label="Manage Subscriptions"
+                label="Manage Stream"
                 sx={value === 1 ? selectedTabStyle : {}}
               />
               <Tab

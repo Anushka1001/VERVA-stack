@@ -23,18 +23,19 @@ import { FormTextFieldPassword } from "../../../Styles/Styles";
 import "./AccountInfo.css";
 import { deleteUser, updatePassInData } from "../../../server/apiCalls";
 import Heading from "../Template/Heading";
+import { useState } from "react";
 
 function AccountInfo() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [buttonClicked, setButtonClicked] = React.useState(false);
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [confirm, setConfirm] = React.useState(false);
-  const [newPass, setNewPass] = React.useState("");
-  const [error, setError] = React.useState(false);
-  const [samePass, setSamePass] = React.useState(false);
-  const [pass, setPass] = React.useState("");
+  const [buttonClicked, setButtonClicked] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirm, setConfirm] = useState(false);
+  const [newPass, setNewPass] = useState("");
+  const [error, setError] = useState(false);
+  const [samePass, setSamePass] = useState(false);
+  const [pass, setPass] = useState("");
 
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const userToken = useSelector((state) => state.token);
@@ -63,7 +64,7 @@ function AccountInfo() {
   const updatePassword = () => {
     if (pass !== newPass) {
       setSamePass(!samePass);
-      console.log("not matching");
+      console.log("Passwords don't match");
     }
   };
 

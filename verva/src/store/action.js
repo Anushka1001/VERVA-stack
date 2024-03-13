@@ -20,3 +20,8 @@ export const emailOrPassWrong = (check) => ({
     type: 'CHECKEMAILORPASSWORD',
     payload: check,
 })
+
+export const WantToStream = (check) => ({
+    type: 'STREAMBOOL',
+    payload: check,
+})

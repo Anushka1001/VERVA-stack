@@ -15,7 +15,11 @@ function Footer() {
     navigate("/Browse_Subscriptions");
   };
   const openDashboard = () => {
-    navigate("/Dashboard");
+    navigate(`/Dashboard/${activeUserVirtualId}`, {
+      state: {
+        v_id: activeUserVirtualId,
+      },
+    });
   };
   const openProfile = () => {
     navigate("/Profile");
@@ -32,6 +36,16 @@ function Footer() {
   const openComingSoon = () => {
     navigate("/coming_soon");
   };
+  const openLiveStreams = () => {
+    navigate("/LiveStream");
+  };
+  const goLive = (activeUserVirtualId) => {
+    navigate(`/GoLive/${activeUserVirtualId}`, {
+      state: {
+        v_id: activeUserVirtualId,
+      },
+    });
+  };
 
   const dispatch = useDispatch();
   const handleLogout = () => {
@@ -46,6 +60,8 @@ function Footer() {
   };
 
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
+  const streamBool = useSelector((state) => state.streamBool);
+  const activeUserVirtualId = useSelector((state) => state.user.v_id);
 
   return (
     <>
@@ -69,15 +85,29 @@ function Footer() {
                 <Grid sx={footerMenuItem} onClick={browseStream}>
                   <span className="mont">Browse Subscriptions</span>
                 </Grid>
-                <Grid sx={footerMenuItem} onClick={openStream}>
-                  <span className="mont">My Subscriptions</span>
-                </Grid>
+                {isAuthenticated ? (
+                  <Grid sx={footerMenuItem} onClick={openStream}>
+                    <span className="mont">My Subscriptions</span>
+                  </Grid>
+                ) : (
+                  ""
+                )}
                 <Grid sx={footerMenuItem} onClick={openComingSoon}>
                   <span className="mont">Upcoming Titles</span>
                 </Grid>
-                <Grid sx={footerMenuItem} onClick={openAbout}>
-                  <span className="mont">About</span>
+                <Grid sx={footerMenuItem} onClick={openLiveStreams}>
+                  <span className="mont">Ongoing Live Streams</span>
                 </Grid>
+                {isAuthenticated ? (
+                  <Grid
+                    sx={footerMenuItem}
+                    onClick={() => goLive(activeUserVirtualId)}
+                  >
+                    <span className="mont">Go Live</span>
+                  </Grid>
+                ) : (
+                  ""
+                )}
               </Stack>
             </Grid>
             <Grid>
@@ -87,14 +117,25 @@ function Footer() {
                     Account
                   </span>
                 </Grid>
-                <Grid sx={footerMenuItem} onClick={openDashboard}>
-                  <span className="mont">Dashboard</span>
-                </Grid>
+                {streamBool ? (
+                  <Grid sx={footerMenuItem} onClick={() => openDashboard()}>
+                    <span className="mont">Dashboard</span>
+                  </Grid>
+                ) : (
+                  ""
+                )}
                 <Grid sx={footerMenuItem} onClick={openProfile}>
                   <span className="mont">Profile</span>
                 </Grid>
-                <Grid sx={footerMenuItem} onClick={openAccountPage}>
-                  <span className="mont">My Account</span>
+                {isAuthenticated ? (
+                  <Grid sx={footerMenuItem} onClick={openAccountPage}>
+                    <span className="mont">My Account</span>
+                  </Grid>
+                ) : (
+                  ""
+                )}
+                <Grid sx={footerMenuItem} onClick={openAbout}>
+                  <span className="mont">About</span>
                 </Grid>
                 {isAuthenticated ? (
                   <Grid sx={footerMenuItem} onClick={handleLogout}>

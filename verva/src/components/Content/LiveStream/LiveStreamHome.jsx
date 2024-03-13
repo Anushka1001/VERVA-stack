@@ -12,7 +12,7 @@ function LiveStreamHome() {
         title={textHeading}
         length={4}
         loc="home"
-        linkLoc="My_Subscriptions"
+        linkLoc="LiveStream"
       />
     </div>
   );

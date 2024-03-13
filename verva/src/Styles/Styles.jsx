@@ -179,4 +179,11 @@ export const BlockHomeDiv = {
   display: "flex",
   justifyContent: "center",
   margin: "20px 100px",
+  userSelect: "none",
+  pointerEvents: "none",
+};
+
+export const dividerStream = {
+  margin: "20px 0",
+  backgroundColor: "#999999",
 };
