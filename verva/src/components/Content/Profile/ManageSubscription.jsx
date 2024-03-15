@@ -28,6 +28,7 @@ function ManageSubscription() {
 
   const startStreaming = () => {
     dispatch(WantToStream());
+    setOpen(true);
   };
 
   const handleClose = () => {

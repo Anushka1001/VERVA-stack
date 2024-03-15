@@ -9,6 +9,11 @@ export const tempCardsHome = {
   overflowY: "shown",
 };
 
+export const tempCardsPlay = {
+  padding: "1em 20%",
+  display: "flex",
+};
+
 export const playButton = {
   color: "#E51B23",
   position: "absolute",
@@ -57,4 +62,30 @@ export const cardTitle = {
   color: "#ffffff",
   fontSize: "18px",
   textTransform: "capitalize",
+};
+
+export const gridcontainerColumn = {
+  display: "flex",
+  padding: "4em 0 0.7em",
+};
+
+export const livecount = {
+  display: "flex",
+  justifyContent: "right",
+  alignItems: "center",
+};
+
+export const liveDetails = {
+  display: "flex",
+};
+
+export const liveTVIcon = {
+  margin: "0 5px 0 0",
+  color: "#e51b23",
+  height: "20px",
+};
+
+export const liveAudienceIcon = {
+  color: "white",
+  marginRight: "10px",
 };

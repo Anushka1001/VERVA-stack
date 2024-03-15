@@ -111,7 +111,7 @@ const Navbar = () => {
     <AppBar position="sticky" sx={navbarStyle}>
       <Toolbar>
         <img
-          src="images/verva-white-full.png"
+          src="verva-white-full.png"
           alt="VERVA"
           className="Navbar_logo userSelectNone"
           onClick={navHome}

@@ -12,7 +12,7 @@ function AddSubs() {
         title={textHeading}
         length={4}
         loc="home"
-        linkLoc="coming_soon"
+        linkLoc="not_found"
       />
     </div>
   );

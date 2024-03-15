@@ -25,7 +25,7 @@ function CardsPages(props) {
   useEffect(() => {
     const timer = setTimeout(() => {
       setDataLoaded(true);
-    }, 1500);
+    }, 500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -33,10 +33,18 @@ function CardsPages(props) {
     navigate("/" + props.linkLoc);
   };
 
-  const handlePlay = (linkLoc, id, title, image, desc, user) => {
+  const handlePlay = (
+    category,
+    id,
+    title,
+    image,
+    desc,
+    user,
+    activeViewerCount
+  ) => {
     !isAuthenticated
       ? navigate("/Login")
-      : linkLoc === "LiveStream"
+      : category === "stream"
       ? navigate(`/LiveStream/${user}/${title}`, {
           state: {
             user: user,
@@ -44,10 +52,12 @@ function CardsPages(props) {
             title: title,
             image: image,
             desc: desc,
+            activeViewerCount,
           },
         })
       : navigate(`/Play/${id}/${title}`, {
           state: {
+            user: user,
             id: id,
             title: title,
             image: image,
@@ -57,11 +67,14 @@ function CardsPages(props) {
   };
 
   const locHome = props.loc === "home";
-  const LiveStreamLinkLoc = props.linkLoc === "LiveStream";
+  const LiveStreamLinkLoc =
+    props.linkLoc === "LiveStream" || props.category === "stream";
   const GridStyle = locHome ? tempCardsHome : tempCards;
   const GridSize = locHome ? 3 : 4;
   const widthSize = locHome ? 293 : 255;
   const textMore = ". . . View More";
+
+  const activeViewerCount = 900;
 
   return (
     <div>
@@ -111,12 +124,13 @@ function CardsPages(props) {
                   sx={playButton}
                   onClick={() =>
                     handlePlay(
-                      props.linkLoc,
+                      props.category,
                       props.data[i].id,
                       props.data[i].title,
                       props.data[i].image,
                       props.data[i].desc,
-                      props.data[i].user
+                      props.data[i].user,
+                      activeViewerCount
                     )
                   }
                 >
@@ -136,7 +150,7 @@ function CardsPages(props) {
                 LiveStreamLinkLoc ? (
                   <>
                     <div>{props.data[i].title}</div>
-                    <div className="liveUser">{props.data[i].user}lalalal</div>
+                    <div className="liveUser">{props.data[i].user}</div>
                   </>
                 ) : (
                   props.data[i].title

@@ -13,6 +13,7 @@ function LiveStreamHome() {
         length={4}
         loc="home"
         linkLoc="LiveStream"
+        category="stream"
       />
     </div>
   );

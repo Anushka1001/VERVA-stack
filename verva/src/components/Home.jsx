@@ -18,7 +18,7 @@ import AccountInfo from "./Content/AccountsInfo/AccountInfo";
 import LoginPage from "./Content/LoginPage/LoginPage";
 import PlayTemplate from "./Content/Template/PlayTemplate";
 import { useSelector } from "react-redux";
-import LiveStream from "./Content/LiveStream/LiveStream";
+import LiveStream from "./Content/Template/LiveStream";
 import Stream from "./Content/LiveStream/Stream";
 import PageNotFound from "./Content/404/pageNotFound";
 import GoLive from "./Content/GoLive/GoLive";
@@ -31,21 +31,45 @@ function Home() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Content />} />
-        <Route path="/Profile" element={<Profile />} />
+        <Route
+          path="/Profile"
+          element={!isAuthenticated ? <Navigate to="/Login" /> : <Profile />}
+        />
         <Route
           path="/My_Subscriptions"
           element={!isAuthenticated ? <Navigate to="/Login" /> : <MySubs />}
         />
         <Route path="/Browse_Subscriptions" element={<AddSubs />} />
         <Route path="/About" element={<About />} />
-        <Route path="/coming_soon" element={<PageNotFound />} />
-        <Route path="/account-deleted" element={<AccountDeleted />} />
-        <Route path="/Account" element={<AccountInfo />} />
-        <Route path="/Play/:id/:title" element={<PlayTemplate />} />
+        <Route path="/not_found" element={<PageNotFound />} />
+        <Route
+          path="/account-deleted"
+          element={
+            !isAuthenticated ? <Navigate to="/Login" /> : <AccountDeleted />
+          }
+        />
+        <Route
+          path="/Account"
+          element={
+            !isAuthenticated ? <Navigate to="/Login" /> : <AccountInfo />
+          }
+        />
+        <Route
+          path="/Play/:id/:title"
+          element={
+            !isAuthenticated ? <Navigate to="/Login" /> : <PlayTemplate />
+          }
+        />
         <Route path="/LiveStream" element={<Stream />} />
         <Route path="/LiveStream/:user/:title" element={<LiveStream />} />
-        <Route path="/GoLive/:id" element={<GoLive />} />
-        <Route path="/Dashboard/:id" element={<Dashboard />} />
+        <Route
+          path="/GoLive/:id"
+          element={!isAuthenticated ? <Navigate to="/Login" /> : <GoLive />}
+        />
+        <Route
+          path="/Dashboard/:id"
+          element={!isAuthenticated ? <Navigate to="/Login" /> : <Dashboard />}
+        />
         <Route
           path="/Login"
           element={!isAuthenticated ? <LoginPage /> : <Navigate to="/" />}

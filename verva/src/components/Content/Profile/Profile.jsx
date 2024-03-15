@@ -8,14 +8,15 @@ import {
 } from "./ProfileStyle";
 import "../../../Styles/Style.css";
 import { useSelector } from "react-redux";
-import PageNotFound from "../404/pageNotFound";
 import ViewProfile from "./ViewProfile";
 import ManageAccount from "./ManageAccount";
 import ManageSubscription from "./ManageSubscription";
 import Heading from "../Template/Heading";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
   const valueHeading = "Profile";
+  const navigate = useNavigate();
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const activeUserName = useSelector((state) => state.user.name);
   const token = useSelector((state) => state.token);
@@ -33,7 +34,7 @@ function Profile() {
   return (
     <>
       {!isAuthenticated ? (
-        <PageNotFound />
+        navigate("/not_found")
       ) : (
         <>
           <Heading value={valueHeading} align="left" />

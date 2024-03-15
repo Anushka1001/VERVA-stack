@@ -5,7 +5,7 @@ function GoLive() {
   const { id } = useParams();
   return (
     <div>
-      <>GOLIVE</>
+      <p>GOLIVE</p>
       <p>{id}</p>
     </div>
   );

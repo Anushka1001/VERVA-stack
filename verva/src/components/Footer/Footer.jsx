@@ -34,7 +34,7 @@ function Footer() {
     navigate("/About");
   };
   const openComingSoon = () => {
-    navigate("/coming_soon");
+    navigate("/not_found");
   };
   const openLiveStreams = () => {
     navigate("/LiveStream");
@@ -98,7 +98,7 @@ function Footer() {
                 <Grid sx={footerMenuItem} onClick={openLiveStreams}>
                   <span className="mont">Ongoing Live Streams</span>
                 </Grid>
-                {isAuthenticated ? (
+                {streamBool ? (
                   <Grid
                     sx={footerMenuItem}
                     onClick={() => goLive(activeUserVirtualId)}

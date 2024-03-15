@@ -1,7 +1,7 @@
 import React from "react";
 import MySubsHome from "./MySubs/MySubsHome";
 import AddSubsHome from "./AddSubs/AddSubsHome";
-import SubsManager from "./SubsManager/SubsManager";
+// import SubsManager from "./SubsManager/SubsManager";
 import UpcomingTitlesHome from "./UpcomingTitles/UpcomingTitlesHome";
 import LiveStreamHome from "./LiveStream/LiveStreamHome.jsx";
 import CarouselPage from "./Carousel/Carousel.jsx";
@@ -19,7 +19,7 @@ function Content() {
       <AddSubsHome />
       <UpcomingTitlesHome />
       <BlockShow />
-      <SubsManager />
+      {/* <SubsManager /> */}
     </>
   );
 }
