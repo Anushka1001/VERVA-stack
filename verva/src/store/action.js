@@ -21,7 +21,7 @@ export const emailOrPassWrong = (check) => ({
     payload: check,
 })
 
-export const WantToStream = (check) => ({
-    type: 'STREAMBOOL',
-    payload: check,
+export const creatorStatus = (stat) => ({
+    type: 'STATUS',
+    payload: stat
 })

@@ -22,6 +22,7 @@ import LiveStream from "./Content/Template/LiveStream";
 import Stream from "./Content/LiveStream/Stream";
 import PageNotFound from "./Content/404/pageNotFound";
 import GoLive from "./Content/GoLive/GoLive";
+import UploadTemplate from "./Content/uploads/UploadTemplate";
 
 function Home() {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
@@ -65,6 +66,12 @@ function Home() {
         <Route
           path="/GoLive/:id"
           element={!isAuthenticated ? <Navigate to="/Login" /> : <GoLive />}
+        />
+        <Route
+          path="/NewUpload/:id"
+          element={
+            !isAuthenticated ? <Navigate to="/Login" /> : <UploadTemplate />
+          }
         />
         <Route
           path="/Dashboard/:id"

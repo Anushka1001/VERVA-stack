@@ -135,3 +135,59 @@ export const deleteUser = async (userToken) => {
         throw error;
     }
 };
+
+export const updateStatusInData = async (userToken, userDataLogin) => {
+    try {
+        const response = await fetch(`${BASE_URL}/update-creator-status`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${userToken}`,
+            },
+            body: JSON.stringify({ status: userDataLogin.status }),
+        });
+
+        if (response.status === 200) {
+            const data = await response.json();
+            return data;
+        } else if (response.status === 422) {
+            const errorData = await response.text();
+            console.error("Error updating name:", errorData);
+            throw new Error(errorData || "Failed to update name");
+        } else {
+            throw new Error(`Unexpected status code: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Error updating name:", error);
+        throw error;
+    }
+};
+
+export const uploadvideo = async (userToken, dataToSend) => {
+    try { 
+        const response = await axios.post('/uploadVideo', dataToSend, {
+            headers: {
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${userToken}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error sending data:', error);
+        throw error;
+    }
+};
+
+export const uploadNewVideo = (userToken, dataToSend) => {
+    console.log("Sending creator to server:", dataToSend);
+    uploadvideo(userToken, dataToSend)
+        .then((data) => {
+            if (data.success) {
+                return data;
+            }
+            console.log("Server response:", data);
+        })
+        .catch((error) => {
+            console.error('Error in convertToCreator:', error);
+        });
+};

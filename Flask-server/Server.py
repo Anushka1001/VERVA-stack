@@ -30,9 +30,22 @@ class user_details(db.Model):
     user_password_inText = db.Column(db.String(50), nullable=False)
     name = db.Column(db.String(50), nullable=False)
     age = db.Column(db.Integer, nullable=False)
+    status = db.Column(db.String(50), nullable=False)
 
     def __repr__(self) -> str:
-        return f"{self.user_id} - {self.email} - {self.user_password} - {self.name} - {self.age} - {self.user_password_inText} - {self.v_id}"
+        return f"{self.user_id} - {self.email} - {self.user_password} - {self.name} - {self.age} - {self.user_password_inText} - {self.v_id} - {self.status}"
+
+# table for registered users
+class stream_details(db.Model):
+    __tablename__ = 'stream_details'
+    stream_id = db.Column(db.String(12), primary_key=True, unique=True, default=str(uuid.uuid4()))
+    user_email = db.Column(db.String(12), default=str(uuid.uuid4()))
+    v_id = db.Column(db.String(8), nullable=False)
+    title = db.Column(db.String(50), nullable=False)
+    description = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self) -> str:
+        return f"{self.stream_id} - {self.user_email} - {self.v_id} - {self.title} - {self.description}"
 
 # table for deleted user data saved for next 10 months or 300 days
 class saved_user_details(db.Model):
@@ -56,6 +69,8 @@ CORS(app, resources={r"/protected": {"origins": localhost}}, supports_credential
 CORS(app, resources={r"/update-name": {"origins": localhost}}, supports_credentials=True)
 CORS(app, resources={r"/update-pass": {"origins": localhost}}, supports_credentials=True)
 CORS(app, resources={r"/delete-account": {"origins": localhost}}, supports_credentials=True)
+CORS(app, resources={r"/update-creator-status": {"origins": localhost}}, supports_credentials=True)
+CORS(app, resources={r"/uploadVideo": {"origins": localhost}}, supports_credentials=True)
 
 # route for registring a user
 @app.route("/register", methods=['POST', 'GET'])
@@ -74,7 +89,7 @@ def register():
                 v_id = generate_user_id()
 
             hashed_password = bcrypt.generate_password_hash(user_password_recieved).decode('utf-8')
-            userDetails = user_details(user_id=user_id, email=user_email, user_password=hashed_password, user_password_inText=user_password_recieved, name=name, age=age, v_id=v_id)
+            userDetails = user_details(user_id=user_id, email=user_email, user_password=hashed_password, user_password_inText=user_password_recieved, name=name, age=age, v_id=v_id, status='user')
             db.session.add(userDetails)
             db.session.commit()
 
@@ -98,7 +113,7 @@ def register():
 
         elif request.method == "GET":
             user_details_list = user_details.query.all()
-            user_details_dicts = [{'id': user.user_id, 'email': user.email, 'user_password': user.user_password, 'name': user.name, 'age': user.age, 'user_password_inText': user.user_password_inText, 'v_id':user.v_id} for user in user_details_list]
+            user_details_dicts = [{'user_id': user.user_id, 'email': user.email, 'user_password': user.user_password, 'name': user.name, 'age': user.age, 'user_password_inText': user.user_password_inText, 'v_id':user.v_id, 'creatorStatus':user.status} for user in user_details_list]
             response = make_response(jsonify(user_details_list=user_details_dicts), 200)
             return response
 
@@ -122,7 +137,8 @@ def login():
             user_email = user.email
             user_age = user.age
             v_id = user.v_id
-            userDetails = {"name": user_name, "email": user_email, "age": user_age, "v_id":v_id}
+            status =user.status
+            userDetails = {"name": user_name, "email": user_email, "age": user_age, "v_id":v_id, 'status':status}
             access_token = create_access_token(identity=user_id)
             response = jsonify({'success': True, 'message': 'Login successful', 'access_token': access_token, 'userDetails': userDetails})
             set_access_cookies(response, access_token)
@@ -203,6 +219,78 @@ def delete_account():
         print(str(e))
         return jsonify({"error": "Internal Server Error"}), 500
 
+# route for updating creator status
+@app.route("/update-creator-status", methods=['POST'])
+@jwt_required()
+def update_creator():
+    try:
+        current_user = get_jwt_identity()
+        user = user_details.query.filter_by(user_id=current_user).first()
+        if not user:
+            return jsonify({'success': False, 'message': 'User not found'}), 404
+        status = request.json.get('status')
+        user.status = status
+        db.session.commit()
+        return jsonify({'success': True, 'message': 'status updated successfully'})
+
+    except Exception as e:
+        print(str(e))
+        return jsonify({"error": "Internal Server Error"}), 500
+
+# upload video
+@app.route("/uploadVideo", methods=['POST','GET'])
+def upload_Video():
+    try:
+        if request.method == "POST":
+            if request.content_type != 'application/json':
+                return make_response(jsonify({"error": "Content-Type must be application/json"}), 415)
+
+            user_email = request.json.get('user_email')
+            v_id = request.json.get('v_id')
+            title = request.json.get('title')
+            description = request.json.get('description')
+            stream_id = str(uuid.uuid4())
+            while stream_details.query.filter_by(stream_id=stream_id).first():
+                stream_id = str(uuid.uuid4())
+            
+            # Assuming you have a function to create and save the stream details
+            streamDetails = stream_details(stream_id=stream_id, user_email=user_email, v_id=v_id, title=title, description=description)
+            db.session.add(streamDetails)
+            db.session.commit()
+
+            response_data = {
+                "success": True,
+                "message": "User uploaded a video successfully",
+                "user": {
+                    'stream_id': streamDetails.stream_id,
+                    'email': streamDetails.user_email,
+                    'v_id': streamDetails.v_id,
+                    'title': streamDetails.title,
+                    'description': streamDetails.description
+                }
+            }
+
+            response = make_response(jsonify(response_data), 200)
+            response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+            response.headers.add("Access-Control-Allow-Credentials", "true")
+
+            return response
+
+        elif request.method == "GET":
+            stream_details_list = stream_details.query.all()
+            stream_details_dicts = [{'stream_id': stream.stream_id, 'user_email': stream.user_email, 'v_id':stream.v_id, 'title':stream.title, 'description':stream.description} for stream in stream_details_list]
+            response = make_response(jsonify(stream_details_list=stream_details_dicts), 200)
+            return response
+
+    except Exception as e:
+        print(str(e))
+        response = make_response(jsonify({"error": "Internal Server Error"}), 500)
+        response.headers.add("Access-Control-Allow-Origin", localhost)
+        response.headers.add("Access-Control-Allow-Credentials", "true")
+        return response
+
+
+# -------------------------------------------------------------------------------------------- #
 # route for jwt token
 @app.route('/protected', methods=['GET'])
 @jwt_required()

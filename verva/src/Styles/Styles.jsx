@@ -4,6 +4,16 @@ export const navbarStyle = {
   background: "#222222",
 };
 
+export const buttonStyle2 = {
+  color: "#ffffff",
+  transition: "color 0.3s",
+  "&:hover": {
+    color: "#f62c34",
+  },
+  fontSize: "1.6em",
+  cursor: "pointer"
+};
+
 // login / Register
 
 export const buttonStyle = {
@@ -14,6 +24,10 @@ export const buttonStyle = {
     backgroundColor: "#f62c34",
   },
   maxHeight: "37px",
+  color: '#ffffff',
+  border: "none",
+  borderRadius: "5px",
+  textTransform: "capitalize"
 };
 
 export const ProfileAvatar = {
@@ -130,8 +144,9 @@ export const footerStyle = {
   position: "static",
   justifyContent: "center",
   color: "#888888",
-  background:
-    "linear-gradient(180deg, rgba(45,45,45,1) 17%, rgba(38,38,38,1) 42%, rgba(34,34,34,1) 100%)",
+  background: "linear-gradient(180deg, rgba(45,45,45,1) 17%, rgba(38,38,38,1) 42%, rgba(34,34,34,1) 100%)",
+  width: "100%",
+  flexGrow: 1
 };
 
 export const footerMenuItem = {

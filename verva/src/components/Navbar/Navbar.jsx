@@ -36,7 +36,7 @@ const Navbar = () => {
   const isAuthenticated = useSelector((state) => state.isAuthenticated);
   const activeUserName = useSelector((state) => state.user.name);
   const activeUserVirtualId = useSelector((state) => state.user.v_id);
-  const streamBool = useSelector((state) => state.streamBool);
+  const creatorStatusval = useSelector((state) => state.user.status);
 
   const navHome = () => {
     navigate("/");
@@ -57,6 +57,13 @@ const Navbar = () => {
       },
     });
   };
+  // const uploadArea = () => {
+  //   navigate(`/NewUpload/${activeUserVirtualId}`, {
+  //     state: {
+  //       v_id: activeUserVirtualId,
+  //     }
+  //   })
+  // }
   const openStream = () => {
     navigate("/LiveStream");
     handleClose();
@@ -132,7 +139,7 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              {streamBool ? (
+              {!(creatorStatusval !== 'creator') ? (
                 <>
                   <Button
                     variant="contained"

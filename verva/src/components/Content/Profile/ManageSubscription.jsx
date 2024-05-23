@@ -4,40 +4,58 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FormNameUpdateStyle } from "./ProfileStyle";
 import { dividerStream } from "../../../Styles/Styles";
-import { WantToStream } from "../../../store/action";
+import { updateStatusInData, uploadNewVideo } from "../../../server/apiCalls";
 
 function ManageSubscription() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [open, setOpen] = useState(false);
-  const streamBool = useSelector((state) => state.streamBool);
-  const activeUserVirtualId = useSelector((state) => state.user.v_id);
+  const userToken = useSelector((state) => state.token);
+  const userEmail = useSelector((state) => state.user.email);
+  const virtualId = useSelector((state) => state.user.v_id);
+  const creatorStatusval = useSelector((state) => state.user.status);
 
   const openDashboard = () => {
-    navigate(`/Dashboard/${activeUserVirtualId}`, {
+    navigate(`/Dashboard/${virtualId}`, {
       state: {
-        v_id: activeUserVirtualId,
+        v_id: virtualId,
       },
     });
   };
 
-  const openUpload = (user) => {
-    navigate(`/NewUpload/${user}`);
-  };
-
-  const startStreaming = () => {
-    dispatch(WantToStream());
-    setOpen(true);
-  };
+  const openUpload = () => {
+    navigate(`/NewUpload/${virtualId}`);
+    }
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  const userDataLogin = {
+    status: 'creator',
+  };
+
+  const handleStatusUpdate = async () => {
+    try {
+      const response = await updateStatusInData(userToken, userDataLogin);
+      if (response.success) {
+        dispatch({
+          type: "STATUS",
+          payload: { status: userDataLogin.status },
+        });
+        setOpen(true);
+      } else {
+        console.error("Failed to update status:", response.message);
+      }
+    } catch (error) {
+      console.error("Error updating status:", error.message);
+    }
+  };
+
   return (
     <>
-      {!streamBool ? (
+      {(creatorStatusval !== 'creator') ? (
         <Grid>
           <span className="deleteHeading mont">Upload and Stream</span>
           <div className="ViewProfile">
@@ -50,7 +68,7 @@ function ManageSubscription() {
               <Button
                 variant="standard"
                 sx={FormNameUpdateStyle}
-                onClick={startStreaming}
+                onClick={handleStatusUpdate}
               >
                 Start Uploading
               </Button>
