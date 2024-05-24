@@ -66,3 +66,14 @@ export const uploadImagesContainer = {
   maxHeight: "58vh",
   overflow: "hidden",
 }
+
+export const uploadBlock = {
+  border: "2px dashed grey",
+  opacity: 0.5,
+  borderRadius: "10px",
+  ":hover":{
+    border: "2px dashed #aaaaaa",
+    opacity: 0.8,
+    cursor: "pointer"
+  }
+}

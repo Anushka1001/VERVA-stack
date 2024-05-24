@@ -163,11 +163,11 @@ export const updateStatusInData = async (userToken, userDataLogin) => {
     }
 };
 
-export const uploadvideo = async (userToken, dataToSend) => {
+export const uploadvideo = async (userToken, formData) => {
     try { 
-        const response = await axios.post('/uploadVideo', dataToSend, {
+        const response = await axios.post('/uploadVideo', formData, {
             headers: {
-                "Content-Type": "application/json",
+                "Content-Type": "multipart/form-data",
                 'Authorization': `Bearer ${userToken}`
             }
         });

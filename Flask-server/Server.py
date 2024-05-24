@@ -1,13 +1,17 @@
+import os
 import uuid
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import LargeBinary
 from flask_bcrypt import Bcrypt
+from werkzeug.utils import secure_filename
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity, set_access_cookies
 from datetime import timedelta
-from functions import generate_user_id
+from functions import generate_user_id, allowed_file, allowed_video
 
 localhost = "http://localhost:3000"
+UPLOAD_FOLDER = '/uploaded'
 
 app = Flask(__name__)
 
@@ -18,6 +22,7 @@ db = SQLAlchemy(app)
 
 app.config['JWT_SECRET_KEY'] = 'your-secret-key'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(days=7)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 jwt = JWTManager(app)
 
 # table for registered users
@@ -43,9 +48,11 @@ class stream_details(db.Model):
     v_id = db.Column(db.String(8), nullable=False)
     title = db.Column(db.String(50), nullable=False)
     description = db.Column(db.String(100), nullable=False)
+    file_data = db.Column(db.String(255))
+    video = db.Column(db.String(255))
 
     def __repr__(self) -> str:
-        return f"{self.stream_id} - {self.user_email} - {self.v_id} - {self.title} - {self.description}"
+        return f"{self.stream_id} - {self.user_email} - {self.v_id} - {self.title} - {self.description} - {self.file_data}"
 
 # table for deleted user data saved for next 10 months or 300 days
 class saved_user_details(db.Model):
@@ -242,43 +249,62 @@ def update_creator():
 def upload_Video():
     try:
         if request.method == "POST":
-            if request.content_type != 'application/json':
-                return make_response(jsonify({"error": "Content-Type must be application/json"}), 415)
+            file = request.files['file_data']
+            video = request.files['video']
 
-            user_email = request.json.get('user_email')
-            v_id = request.json.get('v_id')
-            title = request.json.get('title')
-            description = request.json.get('description')
-            stream_id = str(uuid.uuid4())
-            while stream_details.query.filter_by(stream_id=stream_id).first():
+            if file.filename == '' or video.filename == '':
+                return make_response(jsonify({"error": "No selected file"}), 3400)
+
+            if file and allowed_file(file.filename) and video and allowed_video(video.filename):
+                user_email = request.form.get('user_email')
+                v_id = request.form.get('v_id')
+                title = request.form.get('title')
+                description = request.form.get('description')
+                filename_file = secure_filename(file.filename)
+                filename_video = secure_filename(video.filename)
+
                 stream_id = str(uuid.uuid4())
-            
-            # Assuming you have a function to create and save the stream details
-            streamDetails = stream_details(stream_id=stream_id, user_email=user_email, v_id=v_id, title=title, description=description)
-            db.session.add(streamDetails)
-            db.session.commit()
+                while stream_details.query.filter_by(stream_id=stream_id).first():
+                    stream_id = str(uuid.uuid4())
 
-            response_data = {
-                "success": True,
-                "message": "User uploaded a video successfully",
-                "user": {
-                    'stream_id': streamDetails.stream_id,
-                    'email': streamDetails.user_email,
-                    'v_id': streamDetails.v_id,
-                    'title': streamDetails.title,
-                    'description': streamDetails.description
+                streamDetails = stream_details(
+                    stream_id=stream_id, 
+                    user_email=user_email, 
+                    v_id=v_id, 
+                    title=title, 
+                    description=description, 
+                    file_data=filename_file,
+                    video=filename_video
+                )
+                db.session.add(streamDetails)
+                db.session.commit()
+
+                file.save(os.path.join('uploaded/image', filename_file))
+                video.save(os.path.join('uploaded/video', filename_video))
+
+                response_data = {
+                    "success": True,
+                    "message": "User uploaded a video successfully",
+                    "user": {
+                        'stream_id': streamDetails.stream_id,
+                        'email': streamDetails.user_email,
+                        'v_id': streamDetails.v_id,
+                        'title': streamDetails.title,
+                        'description': streamDetails.description,
+                        'file_data': streamDetails.file_data,
+                        'video': streamDetails.video
+                    }
                 }
-            }
 
-            response = make_response(jsonify(response_data), 200)
-            response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
-            response.headers.add("Access-Control-Allow-Credentials", "true")
+                response = make_response(jsonify(response_data), 200)
+                response.headers.add("Access-Control-Allow-Origin", "http://localhost:3000")
+                response.headers.add("Access-Control-Allow-Credentials", "true")
 
-            return response
+                return response
 
         elif request.method == "GET":
             stream_details_list = stream_details.query.all()
-            stream_details_dicts = [{'stream_id': stream.stream_id, 'user_email': stream.user_email, 'v_id':stream.v_id, 'title':stream.title, 'description':stream.description} for stream in stream_details_list]
+            stream_details_dicts = [{'stream_id': stream.stream_id, 'user_email': stream.user_email, 'v_id':stream.v_id, 'title':stream.title, 'description':stream.description, 'file_data':stream.file_data, 'video':stream.video} for stream in stream_details_list]
             response = make_response(jsonify(stream_details_list=stream_details_dicts), 200)
             return response
 
