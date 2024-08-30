@@ -92,3 +92,8 @@ python app.py
 Navigate to `http://127.0.0.1:5000/` in your web browser, and you should see "Hello, Flask!".
 
 This setup ensures you have a virtual environment specifically for your Flask project, isolating it from other Python projects and dependencies.
+
+
+deployed at render
+git login
+https://flaskserver-e9ql.onrender.com
